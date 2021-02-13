@@ -28,11 +28,34 @@ namespace tournaments.Repository
             return _db.Users.Find(id);
         }
 
-        public void Add(User user)
+        public Response AddUser(User user)
         {
-            user.encriptPassword();
-            _db.Users.Add(user);
-            _db.SaveChanges();
+            Response model = new Response();
+            if (user != null)
+            {
+                if (!_db.Users.Any(u => u.Mail == user.Mail))
+                {
+                    try
+                    {
+                        _db.Users.Add(user);
+                        _db.SaveChanges();
+
+                        model.Flag = true;
+                        model.Message = "Registered successfully!";
+                    }
+                    catch
+                    {
+                        model.Flag = false;
+                        model.Message = "Error while creating account!";
+                    }
+                }
+                else
+                {
+                    model.Flag = false;
+                    model.Message = "Email allready in use!";
+                }
+            }
+            return model;
         }
 
         public void Update(User user)
@@ -41,10 +64,20 @@ namespace tournaments.Repository
             _db.SaveChanges();
         }
 
-        public void Register(string mail, string password)
+        public Response Login(User user)
         {
-            _db.Users.Add(new User(mail, password));
-            _db.SaveChanges();
+            Response response = new Response();
+            if(_db.Users.Any(u=>u.Mail==user.Mail&&u.Password==user.Password))
+            {
+                response.Flag = true;
+                response.Message = "Logged in successfully!";
+            }
+            else
+            {
+                response.Flag = false;
+                response.Message = "Invalid email or password";
+            }
+            return response;
         }
     }
 }

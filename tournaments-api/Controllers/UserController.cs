@@ -30,10 +30,24 @@ namespace tournaments_api.Controllers
                 return BadRequest();
             }
 
-            _user.Add(user);
+            Response response=_user.AddUser(user);
 
-            return Ok();
+            return Ok(response);
 
+        }
+
+        [HttpPost]
+        [Route("login")]
+        public IActionResult Login([FromBody]User user)
+        {
+            if (user.Mail == null || user.Password == null)
+            {
+                return BadRequest();
+            }
+
+            Response response = _user.Login(user);
+
+            return Ok(response);
         }
 
     }
