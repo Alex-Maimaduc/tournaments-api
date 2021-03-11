@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using tournaments.Services;
 using tournements.Data;
 
@@ -25,7 +21,7 @@ namespace tournaments_api.Controllers
         [HttpPost]
         public IActionResult Register([FromBody] User user)
         {
-            if (user.Mail == null || user.Password == null)
+            if (user.Mail == null)
             {
                 return BadRequest();
             }
@@ -37,18 +33,17 @@ namespace tournaments_api.Controllers
         }
 
         [HttpPost]
-        [Route("login")]
-        public IActionResult Login([FromBody]User user)
+        [Route("[action]")]
+        public IActionResult Update([FromBody] User user)
         {
-            if (user.Mail == null || user.Password == null)
+            if (user.Mail == null)
             {
                 return BadRequest();
             }
 
-            Response response = _user.Login(user);
+            _user.Update(user);
 
-            return Ok(response);
+            return Ok();
         }
-
     }
 }

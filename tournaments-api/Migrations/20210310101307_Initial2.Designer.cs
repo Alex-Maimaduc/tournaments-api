@@ -9,8 +9,8 @@ using tournaments.Repository;
 namespace tournaments_api.Migrations
 {
     [DbContext(typeof(UserDbContext))]
-    [Migration("20210212165924_AddedAtributes2")]
-    partial class AddedAtributes2
+    [Migration("20210310101307_Initial2")]
+    partial class Initial2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -22,10 +22,8 @@ namespace tournaments_api.Migrations
 
             modelBuilder.Entity("tournements.Data.User", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
@@ -36,9 +34,6 @@ namespace tournaments_api.Migrations
                     b.Property<string>("Mail")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Password")
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

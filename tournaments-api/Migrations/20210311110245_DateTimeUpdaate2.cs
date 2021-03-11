@@ -2,7 +2,7 @@
 
 namespace tournaments_api.Migrations
 {
-    public partial class AddedAtributes2 : Migration
+    public partial class DateTimeUpdaate2 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

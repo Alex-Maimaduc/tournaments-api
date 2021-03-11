@@ -1,5 +1,4 @@
-﻿using System;
-namespace tournements.Data
+﻿namespace tournements.Data
 {
     public class Response
     {

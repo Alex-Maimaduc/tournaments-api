@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using tournaments.Services;
 using tournements.Data;
 
@@ -64,20 +63,5 @@ namespace tournaments.Repository
             _db.SaveChanges();
         }
 
-        public Response Login(User user)
-        {
-            Response response = new Response();
-            if(_db.Users.Any(u=>u.Mail==user.Mail&&u.Password==user.Password))
-            {
-                response.Flag = true;
-                response.Message = "Logged in successfully!";
-            }
-            else
-            {
-                response.Flag = false;
-                response.Message = "Invalid email or password";
-            }
-            return response;
-        }
     }
 }
