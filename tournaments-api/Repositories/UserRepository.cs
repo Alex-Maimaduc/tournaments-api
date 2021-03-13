@@ -15,7 +15,7 @@ namespace tournaments.Repository
 
         public IQueryable<User> GetStudents => _db.Users;
 
-        public void Delete(int id)
+        public void Delete(string id)
         {
             User user = _db.Users.Find(id);
             _db.Users.Remove(user);
@@ -63,5 +63,10 @@ namespace tournaments.Repository
             _db.SaveChanges();
         }
 
+        public string GetName(string id)
+        {
+            User user = _db.Users.Find(id);
+            return user.LastName +' '+ user.FirstName;
+        }
     }
 }

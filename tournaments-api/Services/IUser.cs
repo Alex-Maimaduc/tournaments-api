@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Microsoft.AspNetCore.Mvc;
 using tournements.Data;
 
 namespace tournaments.Services
@@ -9,6 +10,7 @@ namespace tournaments.Services
         IQueryable<User> GetStudents { get; }
         Response AddUser(User user);
         void Update(User user);
-        void Delete(int id);
+        void Delete(string id);
+        string GetName(string id);
     }
 }
