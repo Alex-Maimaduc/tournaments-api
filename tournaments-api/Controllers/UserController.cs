@@ -57,6 +57,17 @@ namespace tournaments_api.Controllers
             return Ok(_user.GetName(id));
         }
 
+        [HttpGet]
+        [Route("{id}")]
+        public IActionResult GetUser(string? id)
+        {
+            if(id == null)
+            {
+                return BadRequest();
+            }
+            return Ok(_user.GetUser(id));
+        }
+
         [HttpDelete]
         [Route("[action]/{id}")]
         public IActionResult Delete(string id)

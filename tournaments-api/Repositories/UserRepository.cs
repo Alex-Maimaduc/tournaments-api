@@ -22,7 +22,7 @@ namespace tournaments.Repository
             _db.SaveChanges();
         }
 
-        public User GetUser(int? id)
+        public User GetUser(string? id)
         {
             return _db.Users.Find(id);
         }

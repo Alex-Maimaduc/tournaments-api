@@ -6,7 +6,7 @@ namespace tournaments.Services
 {
     public interface IUser
     {
-        User GetUser(int? id);
+        User GetUser(string? id);
         IQueryable<User> GetStudents { get; }
         Response AddUser(User user);
         void Update(User user);
