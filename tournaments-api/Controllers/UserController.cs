@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
 using tournaments.Services;
 using tournements.Data;
 
@@ -10,89 +11,61 @@ namespace tournaments_api.Controllers
     [Route("api/[controller]")]
     public class UserController : ControllerBase
     {
-        private readonly IUser _user;
+        private readonly IUserService _user;
 
-        public UserController(IUser user)
+        public UserController(IUserService user)
         {
             _user = user;
         }
 
+        [HttpGet]
+        public IEnumerable<User> Get() =>
+            _user.Get();
 
-        [HttpPost]
-        public IActionResult Register([FromBody] User user)
+        [HttpGet("{id}", Name = "GetUser")]
+        public ActionResult<User> Get(string id)
         {
-            if (user.Mail == null)
+            var user = _user.Get(id);
+
+            if (user == null)
             {
-                return BadRequest();
+                return NotFound();
             }
 
-            Response response = _user.AddUser(user);
-
-            return Ok(response);
-
+            return user;
         }
 
-        /// <summary>
-        /// Update the <see cref="User"/> model.
-        /// </summary>
-        /// <param name="user"><see cref="User"/> model</param>
-        /// <returns>NoContent.</returns>
         [HttpPost]
-        [Route("[action]")]
-        public IActionResult Update([FromBody] User user)
+        public ActionResult<User> Create(User user)
         {
-            if (user.Mail == null)
-            {
-                return BadRequest();
-            }
+            _user.Create(user);
 
-            _user.Update(user);
+            return CreatedAtRoute("GetUser", new { id = user.Id }, user);
+        }
+
+        [HttpPut]
+        public IActionResult Update(User user)
+        {
+            if (!_user.Update(user))
+            {
+                return NotFound();
+            }
 
             return NoContent();
         }
 
-
-        [HttpGet]
-        [Route("[action]/{id}")]
-        public IActionResult GetName(string? id)
-        {
-            if (id == null)
-            {
-                return BadRequest();
-            }
-            return Ok(_user.GetName(id));
-        }
-
-        /// <summary>
-        /// Get the <see cref="User"/> model with id.
-        /// </summary>
-        /// <param name="id">Model id.</param>
-        /// <returns>Model with id.</returns>
-        [HttpGet]
-        [Route("{id}")]
-        public IActionResult GetUser(string? id)
-        {
-            if (id == null)
-            {
-                return BadRequest();
-            }
-            return Ok(_user.GetUser(id));
-        }
-
-        /// <summary>
-        /// Delete the <see cref="User" model with id./>
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns>NoContent.</returns>
-        [HttpDelete]
-        [Route("[action]/{id}")]
+        [HttpDelete("{id}")]
         public IActionResult Delete(string id)
         {
-            if (id == null)
+            var user = _user.Get(id);
+
+            if (user == null)
             {
-                return BadRequest();
+                return NotFound();
             }
+
             _user.Delete(id);
+
             return NoContent();
         }
     }

@@ -22,7 +22,7 @@ namespace tournaments_api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<UserDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("mssql"),b=>b.MigrationsAssembly("tournaments-api")));
-            services.AddTransient<IUser,UserRepository>();
+            services.AddTransient<IUserService,UserService>();
             services.AddControllers();
             services.AddSwaggerGen();
         }
