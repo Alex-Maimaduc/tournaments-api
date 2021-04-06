@@ -24,6 +24,7 @@ namespace tournaments_api
             services.AddDbContext<UserDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("mssql"),b=>b.MigrationsAssembly("tournaments-api")));
             services.AddTransient<IUser,UserRepository>();
             services.AddControllers();
+            services.AddSwaggerGen();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -33,6 +34,14 @@ namespace tournaments_api
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                c.RoutePrefix = string.Empty;
+            });
 
             app.UseHttpsRedirection();
 

@@ -26,12 +26,17 @@ namespace tournaments_api.Controllers
                 return BadRequest();
             }
 
-            Response response=_user.AddUser(user);
+            Response response = _user.AddUser(user);
 
             return Ok(response);
 
         }
 
+        /// <summary>
+        /// Update the <see cref="User"/> model.
+        /// </summary>
+        /// <param name="user"><see cref="User"/> model</param>
+        /// <returns>NoContent.</returns>
         [HttpPost]
         [Route("[action]")]
         public IActionResult Update([FromBody] User user)
@@ -43,9 +48,10 @@ namespace tournaments_api.Controllers
 
             _user.Update(user);
 
-            return Ok();
+            return NoContent();
         }
-            
+
+
         [HttpGet]
         [Route("[action]/{id}")]
         public IActionResult GetName(string? id)
@@ -57,27 +63,37 @@ namespace tournaments_api.Controllers
             return Ok(_user.GetName(id));
         }
 
+        /// <summary>
+        /// Get the <see cref="User"/> model with id.
+        /// </summary>
+        /// <param name="id">Model id.</param>
+        /// <returns>Model with id.</returns>
         [HttpGet]
         [Route("{id}")]
         public IActionResult GetUser(string? id)
         {
-            if(id == null)
+            if (id == null)
             {
                 return BadRequest();
             }
             return Ok(_user.GetUser(id));
         }
 
+        /// <summary>
+        /// Delete the <see cref="User" model with id./>
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>NoContent.</returns>
         [HttpDelete]
         [Route("[action]/{id}")]
         public IActionResult Delete(string id)
         {
-            if(id == null)
+            if (id == null)
             {
                 return BadRequest();
             }
             _user.Delete(id);
-            return Ok();
+            return NoContent();
         }
     }
 }
