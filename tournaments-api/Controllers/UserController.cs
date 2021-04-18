@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
-using tournaments.Services;
-using tournements.Data;
+using tournaments_api.Interfaces;
+using tournaments_api.Models;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -51,7 +51,7 @@ namespace tournaments_api.Controllers
                 return NotFound();
             }
 
-            return NoContent();
+            return Ok();
         }
 
         [HttpDelete("{id}")]
@@ -66,7 +66,7 @@ namespace tournaments_api.Controllers
 
             _user.Delete(id);
 
-            return NoContent();
+            return Ok();
         }
     }
 }

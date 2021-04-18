@@ -4,8 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using tournaments.Repository;
-using tournaments.Services;
+using tournaments_api.Interfaces;
+using tournaments_api.Repository;
+using tournaments_api.Services;
 
 namespace tournaments_api
 {
@@ -21,8 +22,9 @@ namespace tournaments_api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<UserDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("mssql"),b=>b.MigrationsAssembly("tournaments-api")));
+            services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(Configuration.GetConnectionString("mssql"),b=>b.MigrationsAssembly("tournaments-api")));
             services.AddTransient<IUserService,UserService>();
+            services.AddTransient<ISportService,SportService>();
             services.AddControllers();
             services.AddSwaggerGen();
         }
@@ -34,6 +36,13 @@ namespace tournaments_api
             {
                 app.UseDeveloperExceptionPage();
             }
+            // global cors policy
+            app.UseCors(x => x
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .SetIsOriginAllowed(origin => true) // allow any origin
+                .AllowCredentials()
+                ); // allow credentials
 
             app.UseSwagger();
 
@@ -53,6 +62,7 @@ namespace tournaments_api
             {
                 endpoints.MapControllers();
             });
+
         }
     }
 }

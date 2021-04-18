@@ -1,16 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using tournaments.Repository;
-using tournements.Data;
+using tournaments_api.Interfaces;
+using tournaments_api.Models;
+using tournaments_api.Repository;
 
-namespace tournaments.Services
+namespace tournaments_api.Services
 {
     public class UserService : IUserService
     {
-        private readonly UserDbContext _db;
+        private readonly DatabaseContext _db;
 
-        public UserService(UserDbContext db)
+        public UserService(DatabaseContext db)
         {
             _db = db;
         }

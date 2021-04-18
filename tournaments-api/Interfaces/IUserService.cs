@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using tournements.Data;
+using tournaments_api.Models;
 
-namespace tournaments.Services
+namespace tournaments_api.Interfaces
 {
     public interface IUserService
     {

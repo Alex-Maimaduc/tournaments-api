@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace tournements.Data
+namespace tournaments_api.Models
 {
     public class User
     {

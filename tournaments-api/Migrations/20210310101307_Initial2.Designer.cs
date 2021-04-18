@@ -3,12 +3,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using tournaments.Repository;
+using tournaments_api.Repository;
 
 namespace tournaments_api.Migrations
 {
-    [DbContext(typeof(UserDbContext))]
+    [DbContext(typeof(DatabaseContext))]
     [Migration("20210310101307_Initial2")]
     partial class Initial2
     {
