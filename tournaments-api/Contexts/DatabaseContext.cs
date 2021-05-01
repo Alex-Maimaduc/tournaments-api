@@ -17,13 +17,15 @@ namespace tournaments_api.Repository
                 user.HasIndex(e => e.Mail).IsUnique(true);
             });
 
-            modelBuilder.Entity<Sport>(sport =>
-            {
-            });
+            modelBuilder.Entity<Sport>();
         }
 
         public DbSet<User> Users { get; set; }
 
         public DbSet<Sport> Sports { get; set; }
+
+        public DbSet<Match> Matches { get; set; }
+
+        public DbSet<Team> Teams { get; set; }
     }
 }

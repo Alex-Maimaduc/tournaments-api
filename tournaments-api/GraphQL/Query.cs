@@ -1,0 +1,28 @@
+﻿using System.Linq;
+using HotChocolate;
+using HotChocolate.Data;
+using tournaments_api.Models;
+using tournaments_api.Repository;
+
+namespace tournaments_api.GraphQL
+{
+    public class Query
+    {
+        [UseDbContext(typeof(DatabaseContext))]
+        [UseProjection]
+        [UseSorting]
+        [UseFiltering]
+        public IQueryable<User> GetUser([ScopedService] DatabaseContext context)
+        {
+            return context.Users;
+        }
+
+        [UseDbContext(typeof(DatabaseContext))]
+        [UseFiltering]
+        [UseSorting]
+        public IQueryable<Sport> GetSport([ScopedService] DatabaseContext context)
+        {
+            return context.Sports;
+        }
+    }
+}

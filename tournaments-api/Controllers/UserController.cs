@@ -3,8 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using tournaments_api.Interfaces;
 using tournaments_api.Models;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace tournaments_api.Controllers
 {
     [ApiController]
@@ -65,6 +63,41 @@ namespace tournaments_api.Controllers
             }
 
             _user.Delete(id);
+
+            return Ok();
+        }
+
+        [HttpPost("{id}")]
+        public IActionResult AddSports(string id,List<int> sports)
+        {
+            if (!_user.AddSports(id, sports))
+            {
+                return NotFound();
+            }
+
+            return Ok();
+        }
+
+        [HttpGet("{id}/FavoriteSports")]
+        public ActionResult<List<Sport>> GetFavortieSports(string id)
+        {
+            List<Sport> sports = _user.GetFavoriteSports(id);
+
+            if (sports == null)
+            {
+                return NotFound();
+            }
+
+            return sports;
+        }
+
+        [HttpDelete("{id}/FavoriteSport")]
+        public IActionResult RemoveFavoriteSport(string id,int sportID)
+        {
+            if (!_user.RemoveFavoriteSport(id, sportID))
+            {
+                return NotFound();
+            }
 
             return Ok();
         }

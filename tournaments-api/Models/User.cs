@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace tournaments_api.Models
@@ -7,21 +8,23 @@ namespace tournaments_api.Models
     {
         [Required]
         public string Id { get; set; }
+
         public string FirstName { get; set; }
+
         public string LastName { get; set; }
+
         [Required]
         public string Mail { get; set; }
+
         public string Gender { get; set; }
+
         public DateTime DateOfBirth { get; set; }
 
-        public User(string id, string mail)
-        {
-            Id = id;
-            Mail = mail;
-        }
+        public List<Sport> FavoriteSports { get; set; }
 
         public User()
         {
+            FavoriteSports = new List<Sport>();
         }
     }
 }

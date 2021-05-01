@@ -31,7 +31,7 @@ namespace tournaments_api.Services
 
         public bool Update(Sport sport)
         {
-            if (_db.Sports.Find(sport.Id)==null)
+            if (_db.Sports.Find(sport.Id) == null)
             {
                 return false;
             }
@@ -43,8 +43,8 @@ namespace tournaments_api.Services
 
         public void Delete(int id)
         {
-
             Sport sport = _db.Sports.Find(id);
+
             _db.Sports.Remove(sport);
             _db.SaveChanges();
         }

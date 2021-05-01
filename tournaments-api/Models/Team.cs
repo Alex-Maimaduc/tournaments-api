@@ -6,23 +6,24 @@ using Microsoft.EntityFrameworkCore;
 namespace tournaments_api.Models
 {
     [Index(nameof(Id), IsUnique = true)]
-    public class Sport
+    public class Team
     {
         [Required]
         public int Id { get; set; }
 
+        public string Description { get; set; }
+
         [Required]
         public string Name { get; set; }
 
-        public string ImagePath { get; set; }
+        [Required]
+        public User Owner { get; set; }
 
-        public string Description { get; set; }
+        public List<User> Players { get; set; }
 
-        public List<User> Users{get;set;}
-
-        public Sport()
+        public Team()
         {
-            Users = new List<User>();
+            Players = new List<User>();
         }
     }
 }
