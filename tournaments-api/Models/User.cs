@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace tournaments_api.Models
 {
@@ -9,18 +10,21 @@ namespace tournaments_api.Models
         [Required]
         public string Id { get; set; }
 
+        [Required]
+        public string Mail { get; set; }
+
         public string FirstName { get; set; }
 
         public string LastName { get; set; }
-
-        [Required]
-        public string Mail { get; set; }
 
         public string Gender { get; set; }
 
         public DateTime DateOfBirth { get; set; }
 
         public List<Sport> FavoriteSports { get; set; }
+
+        [InverseProperty("Players")]
+        public Team Team { get; set; }
 
         public User()
         {

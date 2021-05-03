@@ -45,9 +45,16 @@ namespace tournaments_api.Services
 
         public bool Update(Team team)
         {
-            if (_db.Teams.Find(team.Id) == null)
+            if (!_db.Teams.Contains(team))
             {
                 return false;
+            }
+
+            if (team.Players != null)
+            {
+                List<User> usersToAdd = _db.Users.Where(user => team.Players.Select(u => u.Id).Contains(user.Id)).ToList();
+
+                team.Players = usersToAdd;
             }
 
             _db.Teams.Update(team);

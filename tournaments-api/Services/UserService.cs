@@ -20,7 +20,7 @@ namespace tournaments_api.Services
             _db.Users.Include(u=>u.FavoriteSports).ToList();
 
         public User Get(string id) =>
-            _db.Users.Find(id);
+            _db.Users.FirstOrDefault(u => u.Id == id);
 
         public User Create(User user)
         {
@@ -81,17 +81,37 @@ namespace tournaments_api.Services
 
         public bool RemoveFavoriteSport(string id,int sportId)
         {
-            User user = _db.Users.Include(u => u.FavoriteSports).FirstOrDefault(u=>u.Id==id);
+            User user = _db.Users
+                .Include(u => u.FavoriteSports)
+                .FirstOrDefault(u=>u.Id==id);
 
             if(user == null)
             {
                 return false;
             }
 
-            user.FavoriteSports.Remove(user.FavoriteSports.FirstOrDefault(s=>s.Id==sportId));
+            user.FavoriteSports
+                .Remove(user.FavoriteSports
+                .FirstOrDefault(s=>s.Id==sportId));
+
             _db.SaveChanges();
 
             return true;
+        }
+
+        public Team GetTeam(string id)
+        {
+            User user = _db.Users
+                .Include("Team.Sport")
+                .Include("Team.Players")
+                .FirstOrDefault(u => u.Id == id);
+
+            if (user == null)
+            {
+                return null;
+            }
+
+            return user.Team;
         }
     }
 }

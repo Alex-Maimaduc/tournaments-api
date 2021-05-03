@@ -101,5 +101,18 @@ namespace tournaments_api.Controllers
 
             return Ok();
         }
+
+        [HttpGet("{id}/Team")]
+        public ActionResult<Team> GetTeam(string id)
+        {
+            Team team = _user.GetTeam(id);
+
+            if (team == null)
+            {
+                return NotFound();
+            }
+
+            return team;
+        }
     }
 }
