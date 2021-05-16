@@ -23,10 +23,16 @@ namespace tournaments_api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(Configuration.GetConnectionString("mssql"), b => b.MigrationsAssembly("tournaments-api")));
+
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<ISportService, SportService>();
             services.AddTransient<ITeamService, TeamService>();
-            services.AddControllers().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+            services.AddTransient<IMatchPlayersService, MatchPlayersService>();
+            services.AddTransient<IMatchTeamsService, MatchTeamsService>();
+            services.AddTransient<IClubService, ClubService>();
+
+            services.AddControllers();
+
             services.AddSwaggerGen();
         }
 

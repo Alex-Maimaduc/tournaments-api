@@ -21,7 +21,10 @@ namespace tournaments_api.Services
             _db.Teams.Include(t => t.Owner).Include(t => t.Players).ToList();
 
         public Team Get(int id) =>
-            _db.Teams.Find(id);
+            _db.Teams
+                .Include(t => t.Owner)
+                .Include(t => t.Players)
+                .FirstOrDefault(t => t.Id == id);
 
         public Team Create(Team team)
         {
@@ -32,9 +35,9 @@ namespace tournaments_api.Services
 
             if (team.Players != null)
             {
-                List<User> usersToAdd = _db.Users.Where(user => team.Players.Select(u=>u.Id).Contains(user.Id)).ToList();
+                List<User> usersToAdd = _db.Users.Where(user => team.Players.Select(u => u.Id).Contains(user.Id)).ToList();
 
-                team.Players=usersToAdd;
+                team.Players = usersToAdd;
             }
 
             _db.Teams.Add(team);

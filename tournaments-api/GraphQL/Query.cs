@@ -12,7 +12,7 @@ namespace tournaments_api.GraphQL
         [UseProjection]
         [UseSorting]
         [UseFiltering]
-        public IQueryable<User> GetUser([ScopedService] DatabaseContext context)
+        public IQueryable<User> GetUser([Service] DatabaseContext context)
         {
             return context.Users;
         }
@@ -20,7 +20,7 @@ namespace tournaments_api.GraphQL
         [UseDbContext(typeof(DatabaseContext))]
         [UseFiltering]
         [UseSorting]
-        public IQueryable<Sport> GetSport([ScopedService] DatabaseContext context)
+        public IQueryable<Sport> GetSport([Service] DatabaseContext context)
         {
             return context.Sports;
         }

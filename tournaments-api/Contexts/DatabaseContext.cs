@@ -18,14 +18,23 @@ namespace tournaments_api.Repository
             });
 
             modelBuilder.Entity<Sport>();
+
+            modelBuilder.Entity<Match>()
+                .HasDiscriminator();
         }
 
         public DbSet<User> Users { get; set; }
 
         public DbSet<Sport> Sports { get; set; }
 
+        public DbSet<Team> Teams { get; set; }
+
         public DbSet<Match> Matches { get; set; }
 
-        public DbSet<Team> Teams { get; set; }
+        public DbSet<MatchPlayers> MatchesPlayers { get; set; }
+
+        public DbSet<MatchTeams> MatchTeams { get; set; }
+
+        public DbSet<Club> Clubs { get; set; }
     }
 }

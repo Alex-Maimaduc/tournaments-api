@@ -19,10 +19,6 @@ namespace tournaments_api.Models
         [Required]
         public Sport Sport { get; set; }
 
-        public User FirstPlayer { get; set; }
-
-        public User SecondPlyaer { get; set; }
-
         public Match()
         {
         }
