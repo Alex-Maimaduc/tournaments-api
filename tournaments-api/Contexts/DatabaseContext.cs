@@ -21,6 +21,9 @@ namespace tournaments_api.Repository
 
             modelBuilder.Entity<Match>()
                 .HasDiscriminator();
+
+            modelBuilder.Entity<Tournament>()
+                .HasDiscriminator();
         }
 
         public DbSet<User> Users { get; set; }
@@ -36,5 +39,11 @@ namespace tournaments_api.Repository
         public DbSet<MatchTeams> MatchTeams { get; set; }
 
         public DbSet<Club> Clubs { get; set; }
+
+        public DbSet<Tournament> Tournaments { get; set; }
+
+        public DbSet<TournamentPlayers> TournamentPlayers { get; set; }
+
+        public DbSet<TournamentTeams> TournamentTeams { get; set; }
     }
 }

@@ -27,9 +27,11 @@ namespace tournaments_api
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<ISportService, SportService>();
             services.AddTransient<ITeamService, TeamService>();
+            services.AddTransient<IClubService, ClubService>();
             services.AddTransient<IMatchPlayersService, MatchPlayersService>();
             services.AddTransient<IMatchTeamsService, MatchTeamsService>();
-            services.AddTransient<IClubService, ClubService>();
+            services.AddTransient<ITournamentPlayersService, TournamentPlayersService>();
+            services.AddTransient<ITournamentTeamsService, TournamentTeamsService>();
 
             services.AddControllers();
 
