@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using tournaments_api.Interfaces;
 using tournaments_api.Models;
 using tournaments_api.Repository;
@@ -17,7 +18,7 @@ namespace tournaments_api.Services
         }
 
         public List<MatchPlayers> Get() =>
-            _db.MatchesPlayers.ToList();
+            _db.MatchesPlayers.Include(m=>m.FirstPlayer).Include(m=>m.SecondPlayer).ToList();
 
         public MatchPlayers Get(int id) =>
             _db.MatchesPlayers.Find(id);
@@ -26,7 +27,7 @@ namespace tournaments_api.Services
         {
             match.Sport = _db.Sports.Find(match.Sport.Id);
             match.FirstPlayer = _db.Users.Find(match.FirstPlayer.Id);
-            match.SecondPlyaer = _db.Users.Find(match.SecondPlyaer.Id);
+            match.SecondPlayer = _db.Users.Find(match.SecondPlayer.Id);
 
             _db.MatchesPlayers.Add(match);
             _db.SaveChanges();

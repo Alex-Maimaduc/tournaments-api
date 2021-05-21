@@ -91,10 +91,10 @@ namespace tournaments_api.Controllers
             return sports;
         }
 
-        [HttpDelete("{id}/FavoriteSport")]
-        public IActionResult RemoveFavoriteSport(string id,int sportID)
+        [HttpDelete("{id}/DeleteFavoriteSport/{sportId}")]
+        public IActionResult RemoveFavoriteSport(string id,int sportId)
         {
-            if (!_user.RemoveFavoriteSport(id, sportID))
+            if (!_user.RemoveFavoriteSport(id, sportId))
             {
                 return NotFound();
             }
@@ -113,6 +113,18 @@ namespace tournaments_api.Controllers
             }
 
             return team;
+        }
+
+        [HttpGet("{id}/Matches")]
+        public ActionResult<List<MatchPlayers>> GetMatches(string id)
+        {
+            return _user.GetMatches(id);
+        }
+
+        [HttpGet("{id}/Tournaments")]
+        public ActionResult<List<TournamentPlayers>> GetTournments(string id)
+        {
+            return _user.GetTournaments(id);
         }
     }
 }

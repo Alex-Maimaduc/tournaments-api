@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using tournaments_api.Repository;
 
 namespace tournaments_api.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class UserDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210521142000_AddedTorunamentsInMatch")]
+    partial class AddedTorunamentsInMatch
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -231,7 +233,7 @@ namespace tournaments_api.Migrations
                     b.Property<string>("FirstPlayerId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("SecondPlayerId")
+                    b.Property<string>("SecondPlyaerId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int?>("TournamentId")
@@ -239,7 +241,7 @@ namespace tournaments_api.Migrations
 
                     b.HasIndex("FirstPlayerId");
 
-                    b.HasIndex("SecondPlayerId");
+                    b.HasIndex("SecondPlyaerId");
 
                     b.HasIndex("TournamentId");
 
@@ -350,9 +352,9 @@ namespace tournaments_api.Migrations
                         .WithMany()
                         .HasForeignKey("FirstPlayerId");
 
-                    b.HasOne("tournaments_api.Models.User", "SecondPlayer")
+                    b.HasOne("tournaments_api.Models.User", "SecondPlyaer")
                         .WithMany()
-                        .HasForeignKey("SecondPlayerId");
+                        .HasForeignKey("SecondPlyaerId");
 
                     b.HasOne("tournaments_api.Models.TournamentPlayers", "Tournament")
                         .WithMany("Matches")
@@ -360,7 +362,7 @@ namespace tournaments_api.Migrations
 
                     b.Navigation("FirstPlayer");
 
-                    b.Navigation("SecondPlayer");
+                    b.Navigation("SecondPlyaer");
 
                     b.Navigation("Tournament");
                 });

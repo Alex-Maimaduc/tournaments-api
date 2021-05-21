@@ -6,6 +6,8 @@
 
         public Team SecondTeam { get; set; }
 
+        public TournamentTeams Tournament { get; set; }
+
         public MatchTeams()
         {
         }

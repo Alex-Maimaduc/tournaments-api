@@ -33,7 +33,8 @@ namespace tournaments_api
             services.AddTransient<ITournamentPlayersService, TournamentPlayersService>();
             services.AddTransient<ITournamentTeamsService, TournamentTeamsService>();
 
-            services.AddControllers();
+            services.AddControllers()
+                .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
             services.AddSwaggerGen();
         }
