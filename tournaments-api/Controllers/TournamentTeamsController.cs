@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using tournaments_api.Interfaces;
-using tournaments_api.Models;
+using tournaments_api.DBModels;
 
 namespace tournaments_api.Controllers
 {

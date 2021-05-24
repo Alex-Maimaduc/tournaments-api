@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace tournaments_api.Models
+namespace tournaments_api.DBModels
 {
     public class User
     {

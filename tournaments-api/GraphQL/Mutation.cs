@@ -6,8 +6,9 @@ using HotChocolate;
 using HotChocolate.Data;
 using tournaments_api.GraphQL.Sports;
 using tournaments_api.GraphQL.Users;
-using tournaments_api.Models;
+using tournaments_api.DBModels;
 using tournaments_api.Repository;
+using tournaments_api.GraphQL.DBModels;
 
 namespace tournaments_api.GraphQL
 {

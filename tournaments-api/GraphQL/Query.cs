@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using HotChocolate;
 using HotChocolate.Data;
-using tournaments_api.Models;
+using tournaments_api.DBModels;
 using tournaments_api.Repository;
 
 namespace tournaments_api.GraphQL

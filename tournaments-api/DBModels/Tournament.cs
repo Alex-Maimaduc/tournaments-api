@@ -2,24 +2,23 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
 
-namespace tournaments_api.Models
+namespace tournaments_api.DBModels
 {
     [Index(nameof(Id), IsUnique = true)]
-    public class Match
+    public class Tournament
     {
         [Required]
         public int Id { get; set; }
 
-        [Required]
+        public string Name { get; set; }
+
+        public string Description { get; set; }
+
         public DateTime StartDate { get; set; }
 
-        [Required]
         public DateTime EndDate { get; set; }
 
-        [Required]
-        public Sport Sport { get; set; }
-
-        public Match()
+        public Tournament()
         {
         }
     }

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace tournaments_api.Models
+namespace tournaments_api.DBModels
 {
     public class TournamentTeams : Tournament
     {

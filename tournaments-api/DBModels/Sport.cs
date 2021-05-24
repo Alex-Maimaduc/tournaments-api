@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
 
-namespace tournaments_api.Models
+namespace tournaments_api.DBModels
 {
     [Index(nameof(Id), IsUnique = true)]
     public class Sport

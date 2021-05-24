@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using tournaments_api.Models;
+using tournaments_api.DBModels;
 
 namespace tournaments_api.Repository
 {
@@ -34,11 +34,11 @@ namespace tournaments_api.Repository
 
         public DbSet<Match> Matches { get; set; }
 
+        public DbSet<Club> Clubs { get; set; }
+
         public DbSet<MatchPlayers> MatchesPlayers { get; set; }
 
         public DbSet<MatchTeams> MatchTeams { get; set; }
-
-        public DbSet<Club> Clubs { get; set; }
 
         public DbSet<Tournament> Tournaments { get; set; }
 

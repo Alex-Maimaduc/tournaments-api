@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using tournaments_api.Interfaces;
-using tournaments_api.Models;
+using tournaments_api.DBModels;
 using tournaments_api.Repository;
+using tournaments_api.Models;
 
 namespace tournaments_api.Services
 {
@@ -26,16 +27,21 @@ namespace tournaments_api.Services
                 .Include(t => t.Players)
                 .FirstOrDefault(t => t.Id == id);
 
-        public Team Create(Team team)
+        public Team Create(CreateTeamInput teamInput)
         {
+            Team team = teamInput.Team;
+            List<string> userIds = teamInput.UserIds;
+
             if (team.Owner != null)
             {
                 team.Owner = _db.Users.Find(team.Owner.Id);
             }
 
-            if (team.Players != null)
+            team.Sport = _db.Sports.Find(team.Sport.Id);
+
+            if (userIds != null)
             {
-                List<User> usersToAdd = _db.Users.Where(user => team.Players.Select(u => u.Id).Contains(user.Id)).ToList();
+                List<User> usersToAdd = _db.Users.Where(user => userIds.Contains(user.Id)).ToList();
 
                 team.Players = usersToAdd;
             }
@@ -53,9 +59,27 @@ namespace tournaments_api.Services
                 return false;
             }
 
+            team.Sport = _db.Sports.Find(team.Sport.Id);
+
+            if (team.Owner != null)
+            {
+                team.Owner = _db.Users.Find(team.Owner.Id);
+            }
+
+            if (team.Club != null)
+            {
+                team.Club = _db.Clubs.Find(team.Club.Id);
+            }
+
             if (team.Players != null)
             {
-                List<User> usersToAdd = _db.Users.Where(user => team.Players.Select(u => u.Id).Contains(user.Id)).ToList();
+                List<User> usersToAdd = new List<User>();
+                if (team.Players.Select(u => u.Id).Contains(team.Owner.Id))
+                {
+                    team.Players.Remove(team.Owner);
+                    usersToAdd.Add(team.Owner);
+                }
+                usersToAdd.AddRange(_db.Users.Where(user => team.Players.Select(u => u.Id).Contains(user.Id)).ToList());
 
                 team.Players = usersToAdd;
             }

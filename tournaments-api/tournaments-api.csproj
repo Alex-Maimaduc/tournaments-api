@@ -21,12 +21,13 @@
     <PackageReference Include="GraphQL.Server.Ui.Voyager" Version="5.0.2" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Models\" />
+    <Folder Include="DBModels\" />
     <Folder Include="Contexts\" />
     <Folder Include="Services\" />
     <Folder Include="Interfaces\" />
     <Folder Include="GraphQL\" />
     <Folder Include="GraphQL\Users\" />
     <Folder Include="GraphQL\Sports\" />
+    <Folder Include="Models\" />
   </ItemGroup>
 </Project>

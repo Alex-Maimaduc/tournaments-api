@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using tournaments_api.Interfaces;
-using tournaments_api.Models;
+using tournaments_api.DBModels;
 using tournaments_api.Repository;
 
 namespace tournaments_api.Services

@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using tournaments_api.Models;
+using tournaments_api.DBModels;
 
 namespace tournaments_api.Interfaces
 {

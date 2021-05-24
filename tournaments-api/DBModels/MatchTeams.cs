@@ -1,4 +1,4 @@
-﻿namespace tournaments_api.Models
+﻿namespace tournaments_api.DBModels
 {
     public class MatchTeams:Match
     {

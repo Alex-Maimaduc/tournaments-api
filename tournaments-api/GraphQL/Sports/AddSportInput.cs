@@ -1,4 +1,4 @@
-﻿namespace tournaments_api.GraphQL.Sports
+﻿namespace tournaments_api.GraphQL.DBModels
 {
     public record AddSportInput(string Name, string Description, string ImagePath);
 }

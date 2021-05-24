@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using tournaments_api.Interfaces;
+using tournaments_api.DBModels;
 using tournaments_api.Models;
 
 namespace tournaments_api.Controllers
@@ -34,11 +35,11 @@ namespace tournaments_api.Controllers
         }
 
         [HttpPost]
-        public ActionResult<Team> Create(Team team)
+        public ActionResult<Team> Create([FromBody] CreateTeamInput teamInput)
         {
-            _team.Create(team);
+            _team.Create(teamInput);
 
-            return CreatedAtRoute("GetTeam", new { id = team.Id }, team);
+            return CreatedAtRoute("GetTeam", new { id = teamInput.Team.Id }, teamInput.Team);
         }
 
         [HttpPut]
