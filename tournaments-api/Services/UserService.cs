@@ -17,7 +17,9 @@ namespace tournaments_api.Services
         }
 
         public List<User> Get() =>
-            _db.Users.Include(u => u.FavoriteSports).ToList();
+            _db.Users
+            .Include(u => u.FavoriteSports)
+            .ToList();
 
         public User Get(string id) =>
             _db.Users.FirstOrDefault(u => u.Id == id);
@@ -59,7 +61,9 @@ namespace tournaments_api.Services
                 return false;
             }
 
-            List<Sport> sportsToAdd = _db.Sports.Where(sport => sports.Contains(sport.Id)).ToList();
+            List<Sport> sportsToAdd = _db.Sports
+                .Where(sport => sports.Contains(sport.Id))
+                .ToList();
 
             user.FavoriteSports.AddRange(sportsToAdd);
 
@@ -70,7 +74,9 @@ namespace tournaments_api.Services
 
         public List<Sport> GetFavoriteSports(string id)
         {
-            User user = _db.Users.Include(u => u.FavoriteSports).FirstOrDefault(u => u.Id == id);
+            User user = _db.Users
+                .Include(u => u.FavoriteSports)
+                .FirstOrDefault(u => u.Id == id);
 
             if (user == null)
             {
@@ -119,6 +125,7 @@ namespace tournaments_api.Services
         {
             return _db.MatchesPlayers
                 .Where(match => match.FirstPlayer.Id == id || match.SecondPlayer.Id == id)
+                .Include(m => m.Sport)
                 .Include(m => m.FirstPlayer)
                 .Include(m => m.SecondPlayer)
                 .ToList();
@@ -126,7 +133,16 @@ namespace tournaments_api.Services
 
         public List<TournamentPlayers> GetTournaments(string id)
         {
-            return _db.TournamentPlayers.Where(tournament => tournament.Matches.Any(match => match.FirstPlayer.Id == id || match.SecondPlayer.Id == id)).ToList();
+            return _db.TournamentPlayers
+                .Where(tournament => tournament.Matches.Any(match => match.FirstPlayer.Id == id || match.SecondPlayer.Id == id))
+                .ToList();
+        }
+
+        public Gym GetGym(string id)
+        {
+            return _db.Gyms
+                .Include(gym=>gym.Owner)
+                .FirstOrDefault(gym => gym.Owner.Id == id);
         }
     }
 }

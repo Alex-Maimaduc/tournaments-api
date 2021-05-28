@@ -26,5 +26,7 @@ namespace tournaments_api.Interfaces
         List<MatchPlayers> GetMatches(string id);
 
         List<TournamentPlayers> GetTournaments(string id);
+
+        Gym GetGym(string id);
     }
 }

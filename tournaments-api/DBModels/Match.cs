@@ -19,6 +19,9 @@ namespace tournaments_api.DBModels
         [Required]
         public Sport Sport { get; set; }
 
+        [Required]
+        public Gym Gym { get; set; }
+
         public Match()
         {
         }

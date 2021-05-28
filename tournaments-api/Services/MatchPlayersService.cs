@@ -26,6 +26,7 @@ namespace tournaments_api.Services
         public MatchPlayers Create(MatchPlayers match)
         {
             match.Sport = _db.Sports.Find(match.Sport.Id);
+            match.Gym = _db.Gyms.Find(match.Gym.Id);
             match.FirstPlayer = _db.Users.Find(match.FirstPlayer.Id);
             match.SecondPlayer = _db.Users.Find(match.SecondPlayer.Id);
 

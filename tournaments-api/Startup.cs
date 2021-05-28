@@ -32,6 +32,7 @@ namespace tournaments_api
             services.AddTransient<IMatchTeamsService, MatchTeamsService>();
             services.AddTransient<ITournamentPlayersService, TournamentPlayersService>();
             services.AddTransient<ITournamentTeamsService, TournamentTeamsService>();
+            services.AddTransient<IGymService, GymService>();
 
             services.AddControllers()
                 .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);

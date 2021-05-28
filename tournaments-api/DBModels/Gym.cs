@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
+using tournaments_api.Models;
 
 namespace tournaments_api.DBModels
 {
@@ -11,8 +13,18 @@ namespace tournaments_api.DBModels
         public int Id { get; set; }
 
         public string Name { get; set; }
+        
+        public string Country { get; set; }
 
-        public Adress adress { get; set; }
+        public string City { get; set; }
+
+        public string Street { get; set; }
+
+        public int Number { get; set; }
+
+        public string ImagePath { get; set; }
+
+        public User Owner { get; set; }
 
         public List<MatchPlayers> MatchesPlayers { get; set; }
 
@@ -24,6 +36,10 @@ namespace tournaments_api.DBModels
 
         public Gym()
         {
+            MatchesPlayers = new List<MatchPlayers>();
+            MatchesTeams = new List<MatchTeams>();
+            TournamentsPlayers = new List<TournamentPlayers>();
+            TournamentsTeams = new List<TournamentTeams>();
         }
     }
 }

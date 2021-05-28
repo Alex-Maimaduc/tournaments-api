@@ -21,6 +21,8 @@ namespace tournaments_api.DBModels
 
         public DateTime DateOfBirth { get; set; }
 
+        public string ImagePath { get; set; }
+
         public List<Sport> FavoriteSports { get; set; }
 
         [InverseProperty("Players")]

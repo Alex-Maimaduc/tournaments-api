@@ -97,5 +97,15 @@ namespace tournaments_api.Services
             _db.Teams.Remove(team);
             _db.SaveChanges();
         }
+
+        public List<MatchTeams> GetMatches(int id)
+        {
+           return _db.MatchTeams
+                .Where(match => match.FirstTeam.Id == id || match.SecondTeam.Id == id)
+                .Include(m => m.Sport)
+                .Include(m => m.FirstTeam)
+                .Include(m => m.SecondTeam)
+                .ToList();
+        }
     }
 }

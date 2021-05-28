@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using tournaments_api.DBModels;
 
 namespace tournaments_api.Models

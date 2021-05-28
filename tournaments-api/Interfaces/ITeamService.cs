@@ -11,5 +11,6 @@ namespace tournaments_api.Interfaces
         Team Create(CreateTeamInput team);
         bool Update(Team team);
         void Delete(int id);
+        List<MatchTeams> GetMatches(int id);
     }
 }

@@ -126,5 +126,11 @@ namespace tournaments_api.Controllers
         {
             return _user.GetTournaments(id);
         }
+
+        [HttpGet("{id}/Gym")]
+        public ActionResult<Gym> GetGym(string id)
+        {
+            return _user.GetGym(id);
+        }
     }
 }
