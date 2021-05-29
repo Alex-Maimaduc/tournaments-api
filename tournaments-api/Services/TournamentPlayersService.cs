@@ -24,14 +24,19 @@ namespace tournaments_api.Services
 
         public TournamentPlayers Create(TournamentPlayers tournament)
         {
-            List<MatchPlayers> matches = new List<MatchPlayers>();
+            List<MatchPlayers> matches = new();
 
             tournament.Matches.ForEach(match =>
             {
-                matches.Add(_db.MatchesPlayers.Find(match.Id));
+                match.FirstPlayer = _db.Users.Find(match.FirstPlayer.Id);
+                match.SecondPlayer = _db.Users.Find(match.SecondPlayer.Id);
+                match.Sport = _db.Sports.Find(match.Sport.Id);
+                match.Gym = _db.Gyms.Find(match.Gym.Id);
+                matches.Add(match);
             });
 
             tournament.Matches = matches;
+           
 
             _db.TournamentPlayers.Add(tournament);
             _db.SaveChanges();

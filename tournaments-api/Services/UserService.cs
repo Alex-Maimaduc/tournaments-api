@@ -125,10 +125,10 @@ namespace tournaments_api.Services
         {
             return _db.MatchesPlayers
                 .Where(match => match.FirstPlayer.Id == id || match.SecondPlayer.Id == id)
+                .Include(m => m.Gym)
                 .Include(m => m.Sport)
                 .Include(m => m.FirstPlayer)
-                .Include(m => m.SecondPlayer)
-                .ToList();
+                .Include(m => m.SecondPlayer).ToList();
         }
 
         public List<TournamentPlayers> GetTournaments(string id)
@@ -141,7 +141,7 @@ namespace tournaments_api.Services
         public Gym GetGym(string id)
         {
             return _db.Gyms
-                .Include(gym=>gym.Owner)
+                .Include(gym => gym.Owner)
                 .FirstOrDefault(gym => gym.Owner.Id == id);
         }
     }

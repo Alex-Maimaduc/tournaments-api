@@ -16,10 +16,8 @@ namespace tournaments_api.DBModels
         [Required]
         public DateTime EndDate { get; set; }
 
-        [Required]
         public Sport Sport { get; set; }
 
-        [Required]
         public Gym Gym { get; set; }
 
         public Match()

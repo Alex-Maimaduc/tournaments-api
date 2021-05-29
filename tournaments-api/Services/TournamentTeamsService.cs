@@ -27,7 +27,11 @@ namespace tournaments_api.Services
 
             tournament.Matches.ForEach(match =>
             {
-                matches.Add(_db.MatchTeams.Find(match.Id));
+                match.FirstTeam = _db.Teams.Find(match.FirstTeam.Id);
+                match.SecondTeam = _db.Teams.Find(match.SecondTeam.Id);
+                match.Sport = _db.Sports.Find(match.Sport.Id);
+                match.Gym = _db.Gyms.Find(match.Gym.Id);
+                matches.Add(match);
             });
 
             tournament.Matches = matches;
