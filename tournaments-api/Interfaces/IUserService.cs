@@ -27,6 +27,6 @@ namespace tournaments_api.Interfaces
 
         List<TournamentPlayers> GetTournaments(string id);
 
-        Gym GetGym(string id);
+        int GymOwner(string id);
     }
 }

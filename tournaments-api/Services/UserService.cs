@@ -138,11 +138,16 @@ namespace tournaments_api.Services
                 .ToList();
         }
 
-        public Gym GetGym(string id)
+        public int GymOwner(string id)
         {
-            return _db.Gyms
-                .Include(gym => gym.Owner)
-                .FirstOrDefault(gym => gym.Owner.Id == id);
+            Gym gym = _db.Gyms.FirstOrDefault(gym => gym.Owner.Id == id);
+
+            if (gym != null)
+            {
+                return gym.Id;
+            }
+
+            return -1;
         }
     }
 }

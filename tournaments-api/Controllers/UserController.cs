@@ -127,10 +127,17 @@ namespace tournaments_api.Controllers
             return _user.GetTournaments(id);
         }
 
-        [HttpGet("{id}/Gym")]
-        public ActionResult<Gym> GetGym(string id)
+        [HttpGet("{id}/GymOwner")]
+        public ActionResult<int> GetGym(string id)
         {
-            return _user.GetGym(id);
+            int gymId= _user.GymOwner(id);
+
+            if (gymId == -1)
+            {
+                return NotFound();
+            }
+
+            return gymId;
         }
     }
 }

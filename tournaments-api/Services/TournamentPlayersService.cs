@@ -23,6 +23,8 @@ namespace tournaments_api.Services
         public TournamentPlayers Get(int id) =>
             _db.TournamentPlayers
             .Include("Matches.Sport")
+            .Include("Matches.FirstPlayer")
+            .Include("Matches.SecondPlayer")
             .Include(tournament => tournament.Matches)
             .FirstOrDefault(tournament => tournament.Id == id);
 

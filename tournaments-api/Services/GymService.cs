@@ -20,7 +20,7 @@ namespace tournaments_api.Services
             _db.Gyms;
 
         public Gym Get(int id) =>
-            _db.Gyms.Find(id);
+            _db.Gyms.Include(gym=>gym.Owner).FirstOrDefault(gym=>gym.Id==id);
 
         public Gym Create(Gym gym)
         {

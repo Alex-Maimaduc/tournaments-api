@@ -22,6 +22,8 @@ namespace tournaments_api.Services
         public TournamentTeams Get(int id) =>
             _db.TournamentTeams
             .Include("Matches.Sport")
+            .Include("Matches.FirstTeam")
+            .Include("Matches.SecondTeam")
             .Include(tournament => tournament.Matches)
             .FirstOrDefault(tournament => tournament.Id == id);
 
