@@ -10,6 +10,7 @@ namespace tournaments_api.Interfaces
         Gym Create(Gym gym);
         bool Update(Gym gym);
         void Delete(int id);
-        
+        List<MatchPlayers> GetMatches(int id);
+        List<TournamentPlayers> GetTournaments(int id);
     }
 }

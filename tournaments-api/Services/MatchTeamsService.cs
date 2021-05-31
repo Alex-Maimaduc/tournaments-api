@@ -4,6 +4,7 @@ using System.Linq;
 using tournaments_api.Interfaces;
 using tournaments_api.DBModels;
 using tournaments_api.Repository;
+using Microsoft.EntityFrameworkCore;
 
 namespace tournaments_api.Services
 {
@@ -20,7 +21,12 @@ namespace tournaments_api.Services
             _db.MatchTeams.ToList();
 
         public MatchTeams Get(int id) =>
-            _db.MatchTeams.Find(id);
+            _db.MatchTeams
+            .Include(match => match.FirstTeam)
+            .Include(match => match.SecondTeam)
+            .Include(match => match.Sport)
+            .Include(match => match.Gym)
+            .FirstOrDefault(match=>match.Id==id);
 
         public MatchTeams Create(MatchTeams match)
         {

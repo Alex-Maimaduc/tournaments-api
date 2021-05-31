@@ -54,5 +54,23 @@ namespace tournaments_api.Services
             _db.Gyms.Remove(gym);
             _db.SaveChanges();
         }
+
+        public List<MatchPlayers> GetMatches(int id)
+        {
+            return _db.MatchesPlayers
+                .Include(match => match.FirstPlayer)
+                .Include(match => match.SecondPlayer)
+                .Include(match => match.Sport)
+                .Where(match => match.Gym.Id == id)
+                .ToList();
+        }
+
+        public List<TournamentPlayers> GetTournaments(int id)
+        {
+            return _db.TournamentPlayers
+                .Include(tournament=>tournament.Matches)
+                .Where(tournament => tournament.Matches.Any(match => match.Gym.Id == id))
+                .ToList();
+        }
     }
 }

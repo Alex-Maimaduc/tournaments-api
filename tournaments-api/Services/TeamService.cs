@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using tournaments_api.Interfaces;
 using tournaments_api.DBModels;
-using tournaments_api.Repository;
+using tournaments_api.Interfaces;
 using tournaments_api.Models;
+using tournaments_api.Repository;
 
 namespace tournaments_api.Services
 {
@@ -100,11 +100,19 @@ namespace tournaments_api.Services
 
         public List<MatchTeams> GetMatches(int id)
         {
-           return _db.MatchTeams
-                .Where(match => match.FirstTeam.Id == id || match.SecondTeam.Id == id)
-                .Include(m => m.Sport)
-                .Include(m => m.FirstTeam)
-                .Include(m => m.SecondTeam)
+            return _db.MatchTeams
+                 .Where(match => match.FirstTeam.Id == id || match.SecondTeam.Id == id)
+                 .Include(m => m.Sport)
+                 .Include(m => m.FirstTeam)
+                 .Include(m => m.SecondTeam)
+                 .ToList();
+        }
+
+        public List<TournamentTeams> GetTournaments(int id)
+        {
+            return _db.TournamentTeams
+                .Include(tornament=>tornament.Matches)
+                .Where(tournament => tournament.Matches.Any(match => match.FirstTeam.Id == id || match.SecondTeam.Id == id))
                 .ToList();
         }
     }

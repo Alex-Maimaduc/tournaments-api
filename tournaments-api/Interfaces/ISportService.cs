@@ -10,5 +10,7 @@ namespace tournaments_api.Interfaces
         Sport Create(Sport sport);
         bool Update(Sport sport);
         void Delete(int id);
+        List<MatchPlayers> GetMatchesPlayers(int id);
+        List<TournamentPlayers> GetTournamentsPlayers(int id);
     }
 }

@@ -18,10 +18,18 @@ namespace tournaments_api.Services
         }
 
         public List<MatchPlayers> Get() =>
-            _db.MatchesPlayers.Include(m=>m.FirstPlayer).Include(m=>m.SecondPlayer).ToList();
+            _db.MatchesPlayers
+            .Include(m=>m.FirstPlayer)
+            .Include(m=>m.SecondPlayer)
+            .ToList();
 
         public MatchPlayers Get(int id) =>
-            _db.MatchesPlayers.Find(id);
+            _db.MatchesPlayers
+            .Include(match=>match.FirstPlayer)
+            .Include(match=>match.SecondPlayer)
+            .Include(match=>match.Sport)
+            .Include(match=>match.Gym)
+            .FirstOrDefault(match=>match.Id==id);
 
         public MatchPlayers Create(MatchPlayers match)
         {

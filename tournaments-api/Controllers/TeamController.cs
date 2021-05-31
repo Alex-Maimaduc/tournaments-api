@@ -73,5 +73,11 @@ namespace tournaments_api.Controllers
         {
             return _team.GetMatches(id);
         }
+
+        [HttpGet("{id}/Tournaments")]
+        public ActionResult<List<TournamentTeams>> GetTournaments(int id)
+        {
+            return _team.GetTournaments(id);
+        }
     }
 }

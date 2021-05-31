@@ -18,6 +18,8 @@ namespace tournaments_api.DBModels
 
         public DateTime EndDate { get; set; }
 
+        public string ImagePath { get; set; }
+
         public Tournament()
         {
         }

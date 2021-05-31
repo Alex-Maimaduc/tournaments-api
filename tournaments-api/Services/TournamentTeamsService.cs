@@ -3,6 +3,7 @@ using System.Linq;
 using tournaments_api.Interfaces;
 using tournaments_api.DBModels;
 using tournaments_api.Repository;
+using Microsoft.EntityFrameworkCore;
 
 namespace tournaments_api.Services
 {
@@ -19,7 +20,10 @@ namespace tournaments_api.Services
             _db.TournamentTeams.ToList();
 
         public TournamentTeams Get(int id) =>
-            _db.TournamentTeams.Find(id);
+            _db.TournamentTeams
+            .Include("Matches.Sport")
+            .Include(tournament => tournament.Matches)
+            .FirstOrDefault(tournament => tournament.Id == id);
 
         public TournamentTeams Create(TournamentTeams tournament)
         {
