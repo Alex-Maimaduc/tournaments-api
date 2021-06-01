@@ -35,11 +35,11 @@ namespace tournaments_api.Controllers
         }
 
         [HttpPost]
-        public ActionResult<Team> Create([FromBody] CreateTeamInput teamInput)
+        public ActionResult<Team> Create([FromBody] Team team)
         {
-            _team.Create(teamInput);
+            _team.Create(team);
 
-            return CreatedAtRoute("GetTeam", new { id = teamInput.Team.Id }, teamInput.Team);
+            return CreatedAtRoute("GetTeam", new { id = team.Id }, team);
         }
 
         [HttpPut]

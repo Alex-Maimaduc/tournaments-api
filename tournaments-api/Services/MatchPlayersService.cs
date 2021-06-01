@@ -50,6 +50,16 @@ namespace tournaments_api.Services
             {
                 return false;
             }
+
+            match.Sport = _db.Sports.Find(match.Sport.Id);
+            match.Gym = _db.Gyms.Find(match.Gym.Id);
+            match.FirstPlayer = _db.Users.Find(match.FirstPlayer.Id);
+            match.SecondPlayer = _db.Users.Find(match.SecondPlayer.Id);
+            if (match.Tournament != null)
+            {
+                match.Tournament = _db.TournamentPlayers.Find(match.Tournament.Id);
+            }
+
             _db.MatchesPlayers.Update(match);
             _db.SaveChanges();
 

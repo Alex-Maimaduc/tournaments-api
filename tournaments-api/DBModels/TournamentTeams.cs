@@ -6,6 +6,8 @@ namespace tournaments_api.DBModels
     {
         public List<MatchTeams> Matches { get; set; }
 
+        public int WinnerId { get; set; }
+
         public TournamentTeams()
         {
         }

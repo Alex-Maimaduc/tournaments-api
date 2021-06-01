@@ -26,6 +26,8 @@ namespace tournaments_api.DBModels
 
         public User Owner { get; set; }
 
+        public List<User> Members { get; set; }
+
         public List<MatchPlayers> MatchesPlayers { get; set; }
 
         public List<MatchTeams> MatchesTeams { get; set; }

@@ -8,6 +8,12 @@
 
         public TournamentPlayers Tournament { get; set; }
 
+        public string WinnerId { get; set; }
+
+        public int FirstPlayerScore { get; set; }
+
+        public int SecondPlayerScore { get; set; }
+
         public MatchPlayers()
         {
         }

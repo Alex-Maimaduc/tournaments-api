@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using tournaments_api.DBModels;
 
 namespace tournaments_api.Interfaces
@@ -27,6 +28,8 @@ namespace tournaments_api.Interfaces
 
         List<TournamentPlayers> GetTournaments(string id);
 
-        int GymOwner(string id);
+        int GetGym(string id);
+
+        List<MatchPlayers> GetMatchesHistory(string id, int sportId, DateTime startDate, DateTime endDate);
     }
 }

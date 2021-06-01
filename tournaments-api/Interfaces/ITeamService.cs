@@ -8,7 +8,7 @@ namespace tournaments_api.Interfaces
     {
         List<Team> Get();
         Team Get(int id);
-        Team Create(CreateTeamInput team);
+        Team Create(Team team);
         bool Update(Team team);
         void Delete(int id);
         List<MatchTeams> GetMatches(int id);

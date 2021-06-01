@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using tournaments_api.Repository;
 
 namespace tournaments_api.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class UserDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210531195346_AddedChangedDateTypeInMatch")]
+    partial class AddedChangedDateTypeInMatch
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -245,9 +247,6 @@ namespace tournaments_api.Migrations
                     b.Property<string>("Gender")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("GymId")
-                        .HasColumnType("int");
-
                     b.Property<string>("ImagePath")
                         .HasColumnType("nvarchar(max)");
 
@@ -262,8 +261,6 @@ namespace tournaments_api.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("GymId");
 
                     b.HasIndex("Mail")
                         .IsUnique();
@@ -445,15 +442,9 @@ namespace tournaments_api.Migrations
 
             modelBuilder.Entity("tournaments_api.DBModels.User", b =>
                 {
-                    b.HasOne("tournaments_api.DBModels.Gym", "Gym")
-                        .WithMany("Members")
-                        .HasForeignKey("GymId");
-
                     b.HasOne("tournaments_api.DBModels.Team", "Team")
                         .WithMany("Players")
                         .HasForeignKey("TeamId");
-
-                    b.Navigation("Gym");
 
                     b.Navigation("Team");
                 });
@@ -536,8 +527,6 @@ namespace tournaments_api.Migrations
                     b.Navigation("MatchesPlayers");
 
                     b.Navigation("MatchesTeams");
-
-                    b.Navigation("Members");
 
                     b.Navigation("TournamentsPlayers");
 

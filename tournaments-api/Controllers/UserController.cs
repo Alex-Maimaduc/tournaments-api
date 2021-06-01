@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using tournaments_api.Interfaces;
 using tournaments_api.DBModels;
+using System;
 
 namespace tournaments_api.Controllers
 {
@@ -127,10 +128,10 @@ namespace tournaments_api.Controllers
             return _user.GetTournaments(id);
         }
 
-        [HttpGet("{id}/GymOwner")]
+        [HttpGet("{id}/GetGym")]
         public ActionResult<int> GetGym(string id)
         {
-            int gymId= _user.GymOwner(id);
+            int gymId= _user.GetGym(id);
 
             if (gymId == -1)
             {
@@ -138,6 +139,12 @@ namespace tournaments_api.Controllers
             }
 
             return gymId;
+        }
+
+        [HttpGet("{id}/MatchesHistory/{sportId}/{startDate}/{endDate}")]
+        public ActionResult<List<MatchPlayers>> GetMatchesHistory(string id,int sportId, DateTime startDate, DateTime endDate)
+        {
+            return _user.GetMatchesHistory(id,sportId,startDate,endDate);
         }
     }
 }

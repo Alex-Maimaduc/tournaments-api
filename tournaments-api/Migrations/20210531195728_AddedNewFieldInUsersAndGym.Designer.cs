@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using tournaments_api.Repository;
 
 namespace tournaments_api.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class UserDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210531195728_AddedNewFieldInUsersAndGym")]
+    partial class AddedNewFieldInUsersAndGym
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

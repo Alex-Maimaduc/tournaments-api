@@ -27,11 +27,8 @@ namespace tournaments_api.Services
                 .Include(t => t.Players)
                 .FirstOrDefault(t => t.Id == id);
 
-        public Team Create(CreateTeamInput teamInput)
-        {
-            Team team = teamInput.Team;
-            List<string> userIds = teamInput.UserIds;
-
+        public Team Create(Team team)
+        { 
             if (team.Owner != null)
             {
                 team.Owner = _db.Users.Find(team.Owner.Id);
@@ -39,11 +36,17 @@ namespace tournaments_api.Services
 
             team.Sport = _db.Sports.Find(team.Sport.Id);
 
-            if (userIds != null)
+            if (team.Players != null)   
             {
-                List<User> usersToAdd = _db.Users.Where(user => userIds.Contains(user.Id)).ToList();
+                List<User> players = new();
 
-                team.Players = usersToAdd;
+                team.Players.ForEach(player =>
+                {
+                    players.Add(_db.Users.Find(player.Id));
+                });
+
+
+                team.Players = players;
             }
 
             _db.Teams.Add(team);

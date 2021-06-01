@@ -25,6 +25,9 @@ namespace tournaments_api.DBModels
 
         public List<Sport> FavoriteSports { get; set; }
 
+        [InverseProperty("Members")]
+        public Gym Gym { get; set; }
+
         [InverseProperty("Players")]
         public Team Team { get; set; }
 

@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using tournaments_api.Interfaces;
 using tournaments_api.DBModels;
 using tournaments_api.Repository;
+using System;
 
 namespace tournaments_api.Services
 {
@@ -22,7 +23,7 @@ namespace tournaments_api.Services
             .ToList();
 
         public User Get(string id) =>
-            _db.Users.FirstOrDefault(u => u.Id == id);
+            _db.Users.Include(user => user.Gym).FirstOrDefault(u => u.Id == id);
 
         public User Create(User user)
         {
@@ -124,23 +125,25 @@ namespace tournaments_api.Services
         public List<MatchPlayers> GetMatches(string id)
         {
             return _db.MatchesPlayers
-                .Where(match => match.FirstPlayer.Id == id || match.SecondPlayer.Id == id)
+                .Where(match => (match.FirstPlayer.Id == id || match.SecondPlayer.Id == id) && match.WinnerId == null)
                 .Include(m => m.Gym)
                 .Include(m => m.Sport)
                 .Include(m => m.FirstPlayer)
-                .Include(m => m.SecondPlayer).ToList();
+                .Include(m => m.SecondPlayer)
+                .ToList();
         }
 
         public List<TournamentPlayers> GetTournaments(string id)
         {
             return _db.TournamentPlayers
+                .Include(tournament => tournament.Matches)
                 .Where(tournament => tournament.Matches.Any(match => match.FirstPlayer.Id == id || match.SecondPlayer.Id == id))
                 .ToList();
         }
 
-        public int GymOwner(string id)
+        public int GetGym(string id)
         {
-            Gym gym = _db.Gyms.FirstOrDefault(gym => gym.Owner.Id == id);
+            Gym gym = _db.Gyms.FirstOrDefault(gym => gym.Owner.Id == id || gym.Members.Any(member => member.Id == id));
 
             if (gym != null)
             {
@@ -148,6 +151,17 @@ namespace tournaments_api.Services
             }
 
             return -1;
+        }
+
+        public List<MatchPlayers> GetMatchesHistory(string id, int sportId,DateTime startDate,DateTime endDate)
+        { 
+            return _db.MatchesPlayers
+                .Where(match => (match.FirstPlayer.Id == id || match.SecondPlayer.Id == id) && match.WinnerId != null && match.StartDate >=startDate && match.StartDate<=endDate && match.Sport.Id==sportId )
+                .Include(m => m.Gym)
+                .Include(m => m.Sport)
+                .Include(m => m.FirstPlayer)
+                .Include(m => m.SecondPlayer)
+                .ToList();
         }
     }
 }
