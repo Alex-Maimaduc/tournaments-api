@@ -69,14 +69,9 @@ namespace tournaments_api.Services
                 team.Owner = _db.Users.Find(team.Owner.Id);
             }
 
-            if (team.Club != null)
-            {
-                team.Club = _db.Clubs.Find(team.Club.Id);
-            }
-
             if (team.Players != null)
             {
-                List<User> usersToAdd = new List<User>();
+                List<User> usersToAdd = new();
                 if (team.Players.Select(u => u.Id).Contains(team.Owner.Id))
                 {
                     team.Players.Remove(team.Owner);

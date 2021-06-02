@@ -5,6 +5,8 @@ using tournaments_api.Interfaces;
 using tournaments_api.DBModels;
 using tournaments_api.Repository;
 using System;
+using tournaments_api.Enums;
+using tournaments_api.Models;
 
 namespace tournaments_api.Services
 {
@@ -125,7 +127,7 @@ namespace tournaments_api.Services
         public List<MatchPlayers> GetMatches(string id)
         {
             return _db.MatchesPlayers
-                .Where(match => (match.FirstPlayer.Id == id || match.SecondPlayer.Id == id) && match.WinnerId == null)
+                .Where(match => (match.FirstPlayer.Id == id || match.SecondPlayer.Id == id) && match.Status==Status.NotStarted)
                 .Include(m => m.Gym)
                 .Include(m => m.Sport)
                 .Include(m => m.FirstPlayer)
@@ -154,14 +156,54 @@ namespace tournaments_api.Services
         }
 
         public List<MatchPlayers> GetMatchesHistory(string id, int sportId,DateTime startDate,DateTime endDate)
-        { 
+        {
             return _db.MatchesPlayers
-                .Where(match => (match.FirstPlayer.Id == id || match.SecondPlayer.Id == id) && match.WinnerId != null && match.StartDate >=startDate && match.StartDate<=endDate && match.Sport.Id==sportId )
+                .Where(match => (match.FirstPlayer.Id == id || match.SecondPlayer.Id == id) && match.Status == Status.Finished && match.StartDate >=startDate && match.StartDate<=endDate && match.Sport.Id==sportId )
                 .Include(m => m.Gym)
                 .Include(m => m.Sport)
                 .Include(m => m.FirstPlayer)
                 .Include(m => m.SecondPlayer)
                 .ToList();
+        }
+
+        public Stats GetStats(string id, int sportId, DateTime startDate,DateTime endDate)
+        {
+            Stats stats = new();
+
+            List<MatchPlayers> matches = _db.MatchesPlayers
+                .Include(match=>match.FirstPlayer)
+                .Where(match => (match.FirstPlayer.Id == id || match.SecondPlayer.Id == id) && match.Status == Status.Finished && match.EndDate >= startDate && match.EndDate <= endDate && match.Sport.Id == sportId)
+                .ToList();
+
+            List<TournamentPlayers> tournaments= _db.TournamentPlayers
+                .Include(tournament => tournament.Matches)
+                .Where(tournament => tournament.Matches.Any(match => match.FirstPlayer.Id == id || match.SecondPlayer.Id == id) && tournament.Status == Status.Finished && tournament.EndDate >= startDate && tournament.EndDate <= endDate && tournament.Matches.Any(match=>match.Sport.Id==sportId))
+                .ToList();
+
+            foreach (MatchPlayers match in matches)
+            {
+                if (match.FirstPlayer.Id == id)
+                {
+                    if (match.WinnerId == id)
+                    {
+                        stats.WonMatchs += 1;
+                    }
+                    stats.Score += match.FirstScore;
+                }
+                else
+                {
+                    if (match.WinnerId == id)
+                    {
+                        stats.WonMatchs += 1;
+                    }
+                    stats.Score += match.SecondScore;
+                }
+            }
+
+            stats.LostMatches = matches.Count - stats.WonMatchs;
+            stats.WonTournaments= tournaments.Where(tournament => tournament.WinnerId == id).Count();
+            stats.LostTournaments = tournaments.Count - stats.WonTournaments;
+            return stats;
         }
     }
 }

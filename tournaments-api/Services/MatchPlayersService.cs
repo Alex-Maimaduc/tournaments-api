@@ -29,6 +29,7 @@ namespace tournaments_api.Services
             .Include(match=>match.SecondPlayer)
             .Include(match=>match.Sport)
             .Include(match=>match.Gym)
+            .Include("Gym.Owner")
             .FirstOrDefault(match=>match.Id==id);
 
         public MatchPlayers Create(MatchPlayers match)

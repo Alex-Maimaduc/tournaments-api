@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using tournaments_api.Repository;
 
 namespace tournaments_api.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class UserDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210602082329_ModifiedMatchModel")]
+    partial class ModifiedMatchModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -32,6 +34,32 @@ namespace tournaments_api.Migrations
                     b.HasIndex("UsersId");
 
                     b.ToTable("SportUser");
+                });
+
+            modelBuilder.Entity("tournaments_api.DBModels.Club", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OwnerId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Id")
+                        .IsUnique();
+
+                    b.HasIndex("OwnerId");
+
+                    b.ToTable("Clubs");
                 });
 
             modelBuilder.Entity("tournaments_api.DBModels.Gym", b =>
@@ -146,6 +174,9 @@ namespace tournaments_api.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("ClubId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
@@ -163,6 +194,8 @@ namespace tournaments_api.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ClubId");
 
                     b.HasIndex("Id")
                         .IsUnique();
@@ -199,10 +232,6 @@ namespace tournaments_api.Migrations
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(10)");
 
                     b.HasKey("Id");
 
@@ -263,11 +292,17 @@ namespace tournaments_api.Migrations
                     b.Property<string>("FirstPlayerId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<int>("FirstPlayerScore")
+                        .HasColumnType("int");
+
                     b.Property<int?>("GymId")
                         .HasColumnType("int");
 
                     b.Property<string>("SecondPlayerId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("SecondPlayerScore")
+                        .HasColumnType("int");
 
                     b.Property<int?>("TournamentId")
                         .HasColumnType("int");
@@ -366,6 +401,15 @@ namespace tournaments_api.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("tournaments_api.DBModels.Club", b =>
+                {
+                    b.HasOne("tournaments_api.DBModels.User", "Owner")
+                        .WithMany()
+                        .HasForeignKey("OwnerId");
+
+                    b.Navigation("Owner");
+                });
+
             modelBuilder.Entity("tournaments_api.DBModels.Gym", b =>
                 {
                     b.HasOne("tournaments_api.DBModels.User", "Owner")
@@ -386,6 +430,10 @@ namespace tournaments_api.Migrations
 
             modelBuilder.Entity("tournaments_api.DBModels.Team", b =>
                 {
+                    b.HasOne("tournaments_api.DBModels.Club", "Club")
+                        .WithMany("Teams")
+                        .HasForeignKey("ClubId");
+
                     b.HasOne("tournaments_api.DBModels.User", "Owner")
                         .WithMany()
                         .HasForeignKey("OwnerId");
@@ -393,6 +441,8 @@ namespace tournaments_api.Migrations
                     b.HasOne("tournaments_api.DBModels.Sport", "Sport")
                         .WithMany()
                         .HasForeignKey("SportId");
+
+                    b.Navigation("Club");
 
                     b.Navigation("Owner");
 
@@ -480,6 +530,11 @@ namespace tournaments_api.Migrations
                     b.HasOne("tournaments_api.DBModels.Gym", null)
                         .WithMany("TournamentsTeams")
                         .HasForeignKey("GymId");
+                });
+
+            modelBuilder.Entity("tournaments_api.DBModels.Club", b =>
+                {
+                    b.Navigation("Teams");
                 });
 
             modelBuilder.Entity("tournaments_api.DBModels.Gym", b =>

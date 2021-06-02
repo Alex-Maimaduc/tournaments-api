@@ -1,6 +1,8 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
+using tournaments_api.Enums;
 
 namespace tournaments_api.DBModels
 {
@@ -20,8 +22,12 @@ namespace tournaments_api.DBModels
 
         public string ImagePath { get; set; }
 
+        [Column(TypeName = "nvarchar(10)")]
+        public Status Status { get; set; }
+
         public Tournament()
         {
+            Status = Status.NotStarted;
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using tournaments_api.DBModels;
+using tournaments_api.Enums;
 using tournaments_api.Interfaces;
 using tournaments_api.Repository;
 
@@ -21,9 +22,9 @@ namespace tournaments_api.Services
 
         public Gym Get(int id) =>
             _db.Gyms
-            .Include(gym=>gym.Owner)
-            .Include(gym=>gym.Members)
-            .FirstOrDefault(gym=>gym.Id==id);
+            .Include(gym => gym.Owner)
+            .Include(gym => gym.Members)
+            .FirstOrDefault(gym => gym.Id == id);
 
         public Gym Create(Gym gym)
         {
@@ -80,20 +81,28 @@ namespace tournaments_api.Services
             _db.SaveChanges();
         }
 
-        public List<MatchPlayers> GetMatches(int id)
+        public List<MatchPlayers> GetMatches(int id, Status status, int number)
         {
-            return _db.MatchesPlayers
+            var matches = _db.MatchesPlayers
                 .Include(match => match.FirstPlayer)
                 .Include(match => match.SecondPlayer)
                 .Include(match => match.Sport)
-                .Where(match => match.Gym.Id == id)
-                .ToList();
+                .Where(match => match.Gym.Id == id && match.Status == status);
+
+            if (number == 0)
+            {
+                return matches.ToList();
+            }
+
+            return matches.Take(number).ToList();
+
         }
 
         public List<TournamentPlayers> GetTournaments(int id)
         {
             return _db.TournamentPlayers
-                .Include(tournament=>tournament.Matches)
+
+                .Include(tournament => tournament.Matches)
                 .Where(tournament => tournament.Matches.Any(match => match.Gym.Id == id))
                 .ToList();
         }

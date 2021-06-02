@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using tournaments_api.DBModels;
+using tournaments_api.Enums;
 using tournaments_api.Interfaces;
 
 namespace tournaments_api.Controllers
@@ -67,10 +68,10 @@ namespace tournaments_api.Controllers
             return Ok();
         }
 
-        [HttpGet("{id}/Matches")]
-        public ActionResult<List<MatchPlayers>> GetMatches(int id)
+        [HttpGet("{id}/Matches/{status}/{number}")]
+        public ActionResult<List<MatchPlayers>> GetMatches(int id, Status status, int number)
         {
-            return _gyms.GetMatches(id);
+            return _gyms.GetMatches(id, status, number);
         }
 
         [HttpGet("{id}/Tournaments")]

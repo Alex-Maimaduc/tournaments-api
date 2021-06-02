@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using tournaments_api.DBModels;
+using tournaments_api.Models;
 
 namespace tournaments_api.Interfaces
 {
@@ -31,5 +32,8 @@ namespace tournaments_api.Interfaces
         int GetGym(string id);
 
         List<MatchPlayers> GetMatchesHistory(string id, int sportId, DateTime startDate, DateTime endDate);
+
+        Stats GetStats(string id, int sportId, DateTime startDate, DateTime endDate);
+
     }
 }

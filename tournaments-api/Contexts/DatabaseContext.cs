@@ -32,8 +32,6 @@ namespace tournaments_api.Repository
 
         public DbSet<Team> Teams { get; set; }
 
-        public DbSet<Club> Clubs { get; set; }
-
         public DbSet<Gym> Gyms { get; set; }
 
         public DbSet<Match> Matches { get; set; }

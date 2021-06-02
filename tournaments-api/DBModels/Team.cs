@@ -24,8 +24,6 @@ namespace tournaments_api.DBModels
 
         public User Owner { get; set; }
 
-        public Club Club { get; set; }
-
         [InverseProperty("Team")]
         public List<User> Players { get; set; }
 
