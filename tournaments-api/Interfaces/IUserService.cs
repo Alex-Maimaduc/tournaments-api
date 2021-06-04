@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using tournaments_api.DBModels;
+using tournaments_api.Enums;
 using tournaments_api.Models;
 
 namespace tournaments_api.Interfaces
@@ -25,9 +26,9 @@ namespace tournaments_api.Interfaces
 
         bool RemoveFavoriteSport(string id,int sportId);
 
-        List<MatchPlayers> GetMatches(string id);
+        List<MatchPlayers> GetMatches(string id,Status status, Period period);
 
-        List<TournamentPlayers> GetTournaments(string id);
+        List<TournamentPlayers> GetTournaments(string id,Status status, Period period);
 
         int GetGym(string id);
 

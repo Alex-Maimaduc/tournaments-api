@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using tournaments_api.Interfaces;
 using tournaments_api.DBModels;
 using tournaments_api.Models;
+using tournaments_api.Enums;
 
 namespace tournaments_api.Controllers
 {
@@ -68,16 +69,16 @@ namespace tournaments_api.Controllers
             return Ok();
         }
 
-        [HttpGet("{id}/Matches")]
-        public ActionResult<List<MatchTeams>> GetMatches(int id)
+        [HttpGet("{id}/Matches/{status}/{period}")]
+        public ActionResult<List<MatchTeams>> GetMatches(int id, Status status, Period period)
         {
-            return _team.GetMatches(id);
+            return _team.GetMatches(id, status, period);
         }
 
-        [HttpGet("{id}/Tournaments")]
-        public ActionResult<List<TournamentTeams>> GetTournaments(int id)
+        [HttpGet("{id}/Tournaments/{status}/{period}")]
+        public ActionResult<List<TournamentTeams>> GetTournaments(int id, Status status, Period period)
         {
-            return _team.GetTournaments(id);
+            return _team.GetTournaments(id, status, period);
         }
     }
 }

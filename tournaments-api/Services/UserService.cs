@@ -124,25 +124,56 @@ namespace tournaments_api.Services
             return user.Team;
         }
 
-        public List<MatchPlayers> GetMatches(string id)
+        public List<MatchPlayers> GetMatches(string id,Status status, Period period)
         {
-            return _db.MatchesPlayers
-                .Where(match => (match.FirstPlayer.Id == id || match.SecondPlayer.Id == id) && match.Status==Status.NotStarted)
-                .Include(m => m.Gym)
-                .Include(m => m.Sport)
-                .Include(m => m.FirstPlayer)
-                .Include(m => m.SecondPlayer)
-                .ToList();
+            if (period != Period.All)
+            {
+                KeyValuePair<DateTime, DateTime> dateTime = Utils.GetDateTime(period);
+
+
+                return _db.MatchesPlayers
+                    .Where(match => (match.FirstPlayer.Id == id || match.SecondPlayer.Id == id) && match.Status == status && dateTime.Key <= match.StartDate && match.StartDate <= dateTime.Value)
+                    .Include(m => m.Gym)
+                    .Include(m => m.Sport)
+                    .Include(m => m.FirstPlayer)
+                    .Include(m => m.SecondPlayer)
+                    .ToList();
+            }
+            else
+            {
+                return _db.MatchesPlayers
+                    .Where(match => (match.FirstPlayer.Id == id || match.SecondPlayer.Id == id) && match.Status == status)
+                    .Include(m => m.Gym)
+                    .Include(m => m.Sport)
+                    .Include(m => m.FirstPlayer)
+                    .Include(m => m.SecondPlayer)
+                    .ToList();
+            }
+
         }
 
-        public List<TournamentPlayers> GetTournaments(string id)
+        public List<TournamentPlayers> GetTournaments(string id,Status status, Period period)
         {
-            return _db.TournamentPlayers
+            if (period != Period.All)
+            {
+                KeyValuePair<DateTime, DateTime> dateTime = Utils.GetDateTime(period) ;
+
+                return _db.TournamentPlayers
                 .Include(tournament => tournament.Matches)
-                .Where(tournament => tournament.Matches.Any(match => match.FirstPlayer.Id == id || match.SecondPlayer.Id == id))
+                .Include("Matches.Sport")
+                .Where(tournament => tournament.Matches.Any(match => match.FirstPlayer.Id == id || match.SecondPlayer.Id == id) && tournament.Status==status && dateTime.Key <= tournament.EndDate && tournament.EndDate <= dateTime.Value)
                 .ToList();
+            }
+            else
+            {
+                return _db.TournamentPlayers
+                .Include(tournament => tournament.Matches)
+                .Include("Matches.Sport")
+                .Where(tournament => tournament.Matches.Any(match => match.FirstPlayer.Id == id || match.SecondPlayer.Id == id) && tournament.Status == status)
+                .ToList();
+            }
         }
-
+        
         public int GetGym(string id)
         {
             Gym gym = _db.Gyms.FirstOrDefault(gym => gym.Owner.Id == id || gym.Members.Any(member => member.Id == id));
@@ -155,10 +186,10 @@ namespace tournaments_api.Services
             return -1;
         }
 
-        public List<MatchPlayers> GetMatchesHistory(string id, int sportId,DateTime startDate,DateTime endDate)
+        public List<MatchPlayers> GetMatchesHistory(string id, int sportId, DateTime startDate, DateTime endDate)
         {
             return _db.MatchesPlayers
-                .Where(match => (match.FirstPlayer.Id == id || match.SecondPlayer.Id == id) && match.Status == Status.Finished && match.StartDate >=startDate && match.StartDate<=endDate && match.Sport.Id==sportId )
+                .Where(match => (match.FirstPlayer.Id == id || match.SecondPlayer.Id == id) && match.Status == Status.Finished && match.StartDate >= startDate && match.StartDate <= endDate && match.Sport.Id == sportId)
                 .Include(m => m.Gym)
                 .Include(m => m.Sport)
                 .Include(m => m.FirstPlayer)
@@ -166,18 +197,18 @@ namespace tournaments_api.Services
                 .ToList();
         }
 
-        public Stats GetStats(string id, int sportId, DateTime startDate,DateTime endDate)
+        public Stats GetStats(string id, int sportId, DateTime startDate, DateTime endDate)
         {
             Stats stats = new();
 
             List<MatchPlayers> matches = _db.MatchesPlayers
-                .Include(match=>match.FirstPlayer)
-                .Where(match => (match.FirstPlayer.Id == id || match.SecondPlayer.Id == id) && match.Status == Status.Finished && match.EndDate >= startDate && match.EndDate <= endDate && match.Sport.Id == sportId)
+                .Include(match => match.FirstPlayer)
+                .Where(match => (match.FirstPlayer.Id == id || match.SecondPlayer.Id == id) && match.Status == Status.Finished && match.StartDate >= startDate && match.StartDate <= endDate && match.Sport.Id == sportId)
                 .ToList();
 
-            List<TournamentPlayers> tournaments= _db.TournamentPlayers
+            List<TournamentPlayers> tournaments = _db.TournamentPlayers
                 .Include(tournament => tournament.Matches)
-                .Where(tournament => tournament.Matches.Any(match => match.FirstPlayer.Id == id || match.SecondPlayer.Id == id) && tournament.Status == Status.Finished && tournament.EndDate >= startDate && tournament.EndDate <= endDate && tournament.Matches.Any(match=>match.Sport.Id==sportId))
+                .Where(tournament => tournament.Matches.Any(match => match.FirstPlayer.Id == id || match.SecondPlayer.Id == id) && tournament.Status == Status.Finished && tournament.EndDate >= startDate && tournament.EndDate <= endDate && tournament.Matches.Any(match => match.Sport.Id == sportId))
                 .ToList();
 
             foreach (MatchPlayers match in matches)
@@ -201,7 +232,7 @@ namespace tournaments_api.Services
             }
 
             stats.LostMatches = matches.Count - stats.WonMatchs;
-            stats.WonTournaments= tournaments.Where(tournament => tournament.WinnerId == id).Count();
+            stats.WonTournaments = tournaments.Where(tournament => tournament.WinnerId == id).Count();
             stats.LostTournaments = tournaments.Count - stats.WonTournaments;
             return stats;
         }

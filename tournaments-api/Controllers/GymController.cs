@@ -68,16 +68,16 @@ namespace tournaments_api.Controllers
             return Ok();
         }
 
-        [HttpGet("{id}/Matches/{status}/{number}")]
-        public ActionResult<List<MatchPlayers>> GetMatches(int id, Status status, int number)
+        [HttpGet("{id}/Matches/{status}/{period}")]
+        public ActionResult<List<MatchPlayers>> GetMatches(int id, Status status, Period period)
         {
-            return _gyms.GetMatches(id, status, number);
+            return _gyms.GetMatches(id, status, period);
         }
 
-        [HttpGet("{id}/Tournaments")]
-        public ActionResult<List<TournamentPlayers>> GetTournaments(int id)
+        [HttpGet("{id}/Tournaments/{status}/{period}")]
+        public ActionResult<List<TournamentPlayers>> GetTournaments(int id, Status status, Period period)
         {
-            return _gyms.GetTournaments(id);
+            return _gyms.GetTournaments(id,status,period);
         }
     }
 }
