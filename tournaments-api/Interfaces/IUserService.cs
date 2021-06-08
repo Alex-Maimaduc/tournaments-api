@@ -36,5 +36,6 @@ namespace tournaments_api.Interfaces
 
         Stats GetStats(string id, int sportId, DateTime startDate, DateTime endDate);
 
+        List<User> GetUsersForMatch(DateTime startDate, DateTime endDate);
     }
 }

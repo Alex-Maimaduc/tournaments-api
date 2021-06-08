@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using tournaments_api.DBModels;
 using tournaments_api.Enums;
 using tournaments_api.Interfaces;
-using tournaments_api.Models;
 using tournaments_api.Repository;
 
 namespace tournaments_api.Services
@@ -20,7 +19,7 @@ namespace tournaments_api.Services
         }
 
         public List<Team> Get() =>
-            _db.Teams.Include(t => t.Owner).Include(t => t.Players).Where(team=>team.IsDeleted==false).ToList();
+            _db.Teams.Include(t => t.Owner).Include(t => t.Players).Where(team => team.IsDeleted == false).ToList();
 
         public Team Get(int id) =>
             _db.Teams
@@ -90,7 +89,7 @@ namespace tournaments_api.Services
 
         public bool Delete(int id)
         {
-            if(_db.MatchTeams.Any(match => match.FirstTeam.Id == id || match.SecondTeam.Id == id))
+            if (_db.MatchTeams.Any(match => match.FirstTeam.Id == id || match.SecondTeam.Id == id))
             {
                 return false;
             }
@@ -155,6 +154,16 @@ namespace tournaments_api.Services
                    .Where(tournament => tournament.Matches.Any(match => match.FirstTeam.Id == id || match.SecondTeam.Id == id) && tournament.Status == status)
                    .ToList();
             }
+        }
+
+        public List<Team> GetTeamsForMatch(int sportId, DateTime startDate, DateTime endDate)
+        {
+            List<Team> teams = _db.Teams.Where(team => team.Sport.Id == sportId && team.IsDeleted == false).ToList();
+
+            teams.RemoveAll(team => _db.MatchTeams.Any(match => (match.FirstTeam.Id == team.Id || match.SecondTeam.Id == team.Id) &&
+                 ((match.StartDate <= startDate && startDate <= match.EndDate) || (match.StartDate <= endDate && endDate <= match.EndDate))));
+
+            return teams;
         }
     }
 }

@@ -233,5 +233,15 @@ namespace tournaments_api.Services
             stats.LostTournaments = tournaments.Count - stats.WonTournaments;
             return stats;
         }
+
+        public List<User> GetUsersForMatch(DateTime startDate, DateTime endDate)
+        {
+            List<User> users = _db.Users.ToList();
+
+            users.RemoveAll(user => _db.MatchesPlayers.Any(match => (match.FirstPlayer.Id == user.Id || match.SecondPlayer.Id == user.Id) &&
+                 ((match.StartDate <= startDate && startDate <= match.EndDate) || (match.StartDate <= endDate && endDate <= match.EndDate))));
+
+            return users;
+        }
     }
 }

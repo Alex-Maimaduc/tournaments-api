@@ -147,5 +147,11 @@ namespace tournaments_api.Controllers
         {
             return _user.GetMatchesHistory(id,sportId,startDate,endDate);
         }
+
+        [HttpGet("GetUsersForMatch/{startDate}/{endDate}")]
+        public ActionResult<List<User>> GetUsersForMatch(DateTime startDate,DateTime endDate)
+        {
+            return _user.GetUsersForMatch(startDate, endDate);
+        }
     }
 }

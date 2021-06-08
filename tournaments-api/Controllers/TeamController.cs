@@ -4,6 +4,7 @@ using tournaments_api.Interfaces;
 using tournaments_api.DBModels;
 using tournaments_api.Models;
 using tournaments_api.Enums;
+using System;
 
 namespace tournaments_api.Controllers
 {
@@ -76,5 +77,12 @@ namespace tournaments_api.Controllers
         {
             return _team.GetTournaments(id, status, period);
         }
+
+        [HttpGet("GetTeamsForMatch/{sportId}/{startDate}/{endDate}")]
+        public ActionResult<List<Team>> GetTeamsForMatch(int sportId,DateTime startDate,DateTime endDate)
+        {
+            return _team.GetTeamsForMatch(sportId, startDate, endDate);
+        }
     }
 }
+
