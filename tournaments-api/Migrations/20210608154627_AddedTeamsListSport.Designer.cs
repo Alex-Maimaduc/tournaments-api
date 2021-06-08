@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using tournaments_api.Repository;
 
 namespace tournaments_api.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class UserDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210608154627_AddedTeamsListSport")]
+    partial class AddedTeamsListSport
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -55,9 +57,6 @@ namespace tournaments_api.Migrations
 
                     b.Property<string>("ImagePath")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -164,9 +163,6 @@ namespace tournaments_api.Migrations
                     b.Property<string>("ImagePath")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -174,7 +170,7 @@ namespace tournaments_api.Migrations
                     b.Property<string>("OwnerId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("SportId")
+                    b.Property<int?>("SportId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -406,10 +402,8 @@ namespace tournaments_api.Migrations
                         .HasForeignKey("OwnerId");
 
                     b.HasOne("tournaments_api.DBModels.Sport", "Sport")
-                        .WithMany("Teams")
-                        .HasForeignKey("SportId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany()
+                        .HasForeignKey("SportId");
 
                     b.Navigation("Owner");
 
@@ -510,11 +504,6 @@ namespace tournaments_api.Migrations
                     b.Navigation("TournamentsPlayers");
 
                     b.Navigation("TournamentsTeams");
-                });
-
-            modelBuilder.Entity("tournaments_api.DBModels.Sport", b =>
-                {
-                    b.Navigation("Teams");
                 });
 
             modelBuilder.Entity("tournaments_api.DBModels.Team", b =>

@@ -20,12 +20,13 @@ namespace tournaments_api.Services
         }
 
         public List<Team> Get() =>
-            _db.Teams.Include(t => t.Owner).Include(t => t.Players).ToList();
+            _db.Teams.Include(t => t.Owner).Include(t => t.Players).Where(team=>team.IsDeleted==false).ToList();
 
         public Team Get(int id) =>
             _db.Teams
                 .Include(t => t.Owner)
                 .Include(t => t.Players)
+                .Include(t => t.Sport)
                 .FirstOrDefault(t => t.Id == id);
 
         public Team Create(Team team)
@@ -58,50 +59,61 @@ namespace tournaments_api.Services
 
         public bool Update(Team team)
         {
-            if (!_db.Teams.Contains(team))
-            {
-                return false;
-            }
+            Team teamToUpdate = _db.Teams.Include(team => team.Players).Include(team => team.Sport).FirstOrDefault(t => t.Id == team.Id);
 
-            team.Sport = _db.Sports.Find(team.Sport.Id);
-
-            if (team.Owner != null)
+            teamToUpdate.Players.ForEach(user =>
             {
-                team.Owner = _db.Users.Find(team.Owner.Id);
-            }
-
-            if (team.Players != null)
-            {
-                List<User> usersToAdd = new();
-                if (team.Players.Select(u => u.Id).Contains(team.Owner.Id))
+                if (!team.Players.Exists(u => u.Id == user.Id))
                 {
-                    team.Players.Remove(team.Owner);
-                    usersToAdd.Add(team.Owner);
+                    user.Team = null;
                 }
-                usersToAdd.AddRange(_db.Users.Where(user => team.Players.Select(u => u.Id).Contains(user.Id)).ToList());
+            });
 
-                team.Players = usersToAdd;
-            }
+            teamToUpdate.Name = team.Name;
+            teamToUpdate.Description = team.Description;
+            teamToUpdate.Sport = _db.Sports.Find(team.Sport.Id);
+            teamToUpdate.ImagePath = team.ImagePath;
 
-            _db.Teams.Update(team);
+            List<User> players = new();
+
+            team.Players.ForEach(member =>
+            {
+                players.Add(_db.Users.Find(member.Id));
+            });
+
+            teamToUpdate.Players = players;
+
             _db.SaveChanges();
 
             return true;
         }
 
-        public void Delete(int id)
+        public bool Delete(int id)
         {
-            Team team = _db.Teams.Find(id);
+            if(_db.MatchTeams.Any(match => match.FirstTeam.Id == id || match.SecondTeam.Id == id))
+            {
+                return false;
+            }
 
-            _db.Teams.Remove(team);
+            Team team = _db.Teams.Include(team => team.Players).FirstOrDefault(team => team.Id == id);
+
+            team.Owner = null;
+            team.IsDeleted = true;
+            team.Players.ForEach(user =>
+            {
+                user.Team = null;
+            });
+
             _db.SaveChanges();
+
+            return true;
         }
 
         public List<MatchTeams> GetMatches(int id, Status status, Period period)
         {
             if (period != Period.All)
             {
-                KeyValuePair<DateTime, DateTime> dateTime = Utils.GetDateTime(period);
+                KeyValuePair<DateTime, DateTime> dateTime = Utils.GetDateTime(period, status);
 
                 return _db.MatchTeams
                  .Where(match => (match.FirstTeam.Id == id || match.SecondTeam.Id == id) && match.Status == status && dateTime.Key <= match.StartDate && match.StartDate <= dateTime.Value)
@@ -114,7 +126,7 @@ namespace tournaments_api.Services
             else
             {
                 return _db.MatchTeams
-                 .Where(match =>( match.FirstTeam.Id == id || match.SecondTeam.Id == id) && match.Status == status)
+                 .Where(match => (match.FirstTeam.Id == id || match.SecondTeam.Id == id) && match.Status == status)
                  .Include(m => m.Sport)
                  .Include(m => m.FirstTeam)
                  .Include(m => m.SecondTeam)
@@ -127,7 +139,7 @@ namespace tournaments_api.Services
         {
             if (period != Period.All)
             {
-                KeyValuePair<DateTime, DateTime> dateTime = Utils.GetDateTime(period);
+                KeyValuePair<DateTime, DateTime> dateTime = Utils.GetDateTime(period, status);
 
                 return _db.TournamentTeams
                     .Include(tornament => tornament.Matches)

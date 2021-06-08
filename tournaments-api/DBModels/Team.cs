@@ -20,7 +20,11 @@ namespace tournaments_api.DBModels
         [Required]
         public Sport Sport { get; set; }
 
+        public DateTime CreationDate { get; set; }
+
         public string ImagePath { get; set; }
+
+        public bool IsDeleted { get; set; }
 
         public User Owner { get; set; }
 
@@ -29,6 +33,7 @@ namespace tournaments_api.DBModels
 
         public Team()
         {
+            IsDeleted = false;
             Players = new List<User>();
         }
     }

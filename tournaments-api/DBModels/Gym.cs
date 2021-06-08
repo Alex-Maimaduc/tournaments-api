@@ -13,7 +13,11 @@ namespace tournaments_api.DBModels
         public int Id { get; set; }
 
         public string Name { get; set; }
-        
+
+        public string Description { get; set; }
+
+        public DateTime CreationDate { get; set; }
+
         public string Country { get; set; }
 
         public string City { get; set; }
@@ -23,6 +27,8 @@ namespace tournaments_api.DBModels
         public int Number { get; set; }
 
         public string ImagePath { get; set; }
+
+        public bool IsDeleted { get; set; }
 
         public User Owner { get; set; }
 

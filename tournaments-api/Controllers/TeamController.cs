@@ -55,18 +55,14 @@ namespace tournaments_api.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public ActionResult<bool> Delete(int id)
         {
-            var team = _team.Get(id);
-
-            if (team == null)
+            if (!_team.Delete(id))
             {
-                return NotFound();
+                return false;
             }
 
-            _team.Delete(id);
-
-            return Ok();
+            return true;
         }
 
         [HttpGet("{id}/Matches/{status}/{period}")]

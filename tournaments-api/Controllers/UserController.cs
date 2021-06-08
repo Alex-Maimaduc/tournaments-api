@@ -104,17 +104,17 @@ namespace tournaments_api.Controllers
             return Ok();
         }
 
-        [HttpGet("{id}/Team")]
-        public ActionResult<Team> GetTeam(string id)
+        [HttpGet("{id}/GetTeam")]
+        public ActionResult<int> GetTeam(string id)
         {
-            Team team = _user.GetTeam(id);
+            int teamId = _user.GetTeam(id);
 
-            if (team == null)
+            if (teamId == -1)
             {
                 return NotFound();
             }
 
-            return team;
+            return teamId;
         }
 
         [HttpGet("{id}/Matches/{status}/{period}")]

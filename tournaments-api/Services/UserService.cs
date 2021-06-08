@@ -109,26 +109,23 @@ namespace tournaments_api.Services
             return true;
         }
 
-        public Team GetTeam(string id)
+        public int GetTeam(string id)
         {
-            User user = _db.Users
-                .Include("Team.Sport")
-                .Include("Team.Players")
-                .FirstOrDefault(u => u.Id == id);
+            Team team = _db.Teams.FirstOrDefault(team => team.Owner.Id == id || team.Players.Any(player => player.Id == id));
 
-            if (user == null)
+            if (team != null)
             {
-                return null;
+                return team.Id;
             }
 
-            return user.Team;
+            return -1;
         }
 
         public List<MatchPlayers> GetMatches(string id,Status status, Period period)
         {
             if (period != Period.All)
             {
-                KeyValuePair<DateTime, DateTime> dateTime = Utils.GetDateTime(period);
+                KeyValuePair<DateTime, DateTime> dateTime = Utils.GetDateTime(period,status);
 
 
                 return _db.MatchesPlayers
@@ -156,7 +153,7 @@ namespace tournaments_api.Services
         {
             if (period != Period.All)
             {
-                KeyValuePair<DateTime, DateTime> dateTime = Utils.GetDateTime(period) ;
+                KeyValuePair<DateTime, DateTime> dateTime = Utils.GetDateTime(period,status) ;
 
                 return _db.TournamentPlayers
                 .Include(tournament => tournament.Matches)

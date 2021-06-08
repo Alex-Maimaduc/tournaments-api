@@ -50,14 +50,22 @@ namespace tournaments_api.Services
 
         public bool Update(Gym gym)
         {
-            if (!_db.Gyms.Contains(gym))
+            Gym gymToUpdate = _db.Gyms.Include(gym => gym.Members).FirstOrDefault(g => g.Id == gym.Id);
+
+            gymToUpdate.Members.ForEach(user =>
             {
-                return false;
-            }
+                if (!gym.Members.Exists(u => u.Id == user.Id))
+                {
+                    user.Gym = null;
+                }
+            });
 
-            User owner = _db.Users.Find(gym.Owner.Id);
-
-            gym.Owner = owner;
+            gymToUpdate.Name = gym.Name;
+            gymToUpdate.Description = gym.Description;
+            gymToUpdate.Street = gym.Street;
+            gymToUpdate.City = gym.City;
+            gymToUpdate.Number = gym.Number;
+            gymToUpdate.ImagePath = gym.ImagePath;
 
             List<User> members = new();
 
@@ -66,9 +74,8 @@ namespace tournaments_api.Services
                 members.Add(_db.Users.Find(member.Id));
             });
 
-            gym.Members = members;
+            gymToUpdate.Members = members;
 
-            _db.Gyms.Update(gym);
             _db.SaveChanges();
 
             return true;
@@ -86,7 +93,7 @@ namespace tournaments_api.Services
         {
             if (period != Period.All)
             {
-                KeyValuePair<DateTime, DateTime> dateTime = Utils.GetDateTime(period);
+                KeyValuePair<DateTime, DateTime> dateTime = Utils.GetDateTime(period, status);
 
                 return _db.MatchesPlayers
                     .Include(match => match.FirstPlayer)
@@ -113,7 +120,7 @@ namespace tournaments_api.Services
         {
             if (period != Period.All)
             {
-                KeyValuePair<DateTime, DateTime> dateTime = Utils.GetDateTime(period);
+                KeyValuePair<DateTime, DateTime> dateTime = Utils.GetDateTime(period, status);
 
                 return _db.TournamentPlayers
                     .Include(tournament => tournament.Matches)
@@ -123,10 +130,10 @@ namespace tournaments_api.Services
             }
             else
             {
-                var tournaments= _db.TournamentPlayers
+                var tournaments = _db.TournamentPlayers
                     .Include(tournament => tournament.Matches)
                     .Include("Matches.Sport")
-                    .Where(tournament => tournament.Matches.Any(match => match.Gym.Id == id) && tournament.Status==status)
+                    .Where(tournament => tournament.Matches.Any(match => match.Gym.Id == id) && tournament.Status == status)
                     .ToList();
 
                 return tournaments;

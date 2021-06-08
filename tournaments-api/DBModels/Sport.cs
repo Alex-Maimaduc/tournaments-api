@@ -20,9 +20,12 @@ namespace tournaments_api.DBModels
 
         public List<User> Users{get;set;}
 
+        public List<Team> Teams { get; set; }
+
         public Sport()
         {
             Users = new List<User>();
+            Teams = new List<Team>();
         }
     }
 }

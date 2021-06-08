@@ -20,7 +20,7 @@ namespace tournaments_api.Interfaces
 
         bool AddSports(string id, List<int> sports);
 
-        Team GetTeam(string id);
+        int GetTeam(string id);
 
         List<Sport> GetFavoriteSports(string id);
 
