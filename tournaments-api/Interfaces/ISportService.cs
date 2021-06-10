@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using tournaments_api.DBModels;
+using tournaments_api.Enums;
 
 namespace tournaments_api.Interfaces
 {
@@ -10,7 +11,7 @@ namespace tournaments_api.Interfaces
         Sport Create(Sport sport);
         bool Update(Sport sport);
         void Delete(int id);
-        List<MatchPlayers> GetMatchesPlayers(int id);
-        List<TournamentPlayers> GetTournamentsPlayers(int id);
+        List<TournamentPlayers> GetTournaments(int id,Status status,Period period);
+        List<MatchPlayers> GetMatches(int id,Status status, Period period);
     }
 }

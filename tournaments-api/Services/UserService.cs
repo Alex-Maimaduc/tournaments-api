@@ -25,7 +25,7 @@ namespace tournaments_api.Services
             .ToList();
 
         public User Get(string id) =>
-            _db.Users.Include(user => user.Gym).FirstOrDefault(u => u.Id == id);
+            _db.Users.Include(user => user.Gym).Include(user=>user.Team).FirstOrDefault(u => u.Id == id);
 
         public User Create(User user)
         {
@@ -146,7 +146,6 @@ namespace tournaments_api.Services
                     .Include(m => m.SecondPlayer)
                     .ToList();
             }
-
         }
 
         public List<TournamentPlayers> GetTournaments(string id,Status status, Period period)

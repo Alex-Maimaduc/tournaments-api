@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using tournaments_api.Interfaces;
 using tournaments_api.DBModels;
+using tournaments_api.Enums;
 
 namespace tournaments_api.Controllers
 {
@@ -67,16 +68,16 @@ namespace tournaments_api.Controllers
             return Ok();
         }
 
-        [HttpGet("{id}/MatchesPlayers")]
-        public ActionResult<List<MatchPlayers>> GetMatches(int id)
+        [HttpGet("{id}/Matches/{status}/{period}")]
+        public ActionResult<List<MatchPlayers>> GetMatches(int id, Status status, Period period)
         {
-            return _sport.GetMatchesPlayers(id);
+            return _sport.GetMatches(id, status, period);
         }
 
-        [HttpGet("{id}/TournamentsPlayers")]
-        public ActionResult<List<TournamentPlayers>> GetTournamentsPlayers(int id)
+        [HttpGet("{id}/Tournaments/{status}/{period}")]
+        public ActionResult<List<TournamentPlayers>> GetTournamentsPlayers(int id, Status status, Period period)
         {
-            return _sport.GetTournamentsPlayers(id);
+            return _sport.GetTournaments(id, Status.NotStarted, period);
         }
     }
 }
