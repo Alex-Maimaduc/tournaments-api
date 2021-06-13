@@ -25,7 +25,7 @@ namespace tournaments_api.Services
             .ToList();
 
         public User Get(string id) =>
-            _db.Users.Include(user => user.Gym).Include(user=>user.Team).FirstOrDefault(u => u.Id == id);
+            _db.Users.Include(user => user.Gym).Include(user => user.Team).FirstOrDefault(u => u.Id == id);
 
         public User Create(User user)
         {
@@ -121,11 +121,11 @@ namespace tournaments_api.Services
             return -1;
         }
 
-        public List<MatchPlayers> GetMatches(string id,Status status, Period period)
+        public List<MatchPlayers> GetMatches(string id, Status status, Period period)
         {
             if (period != Period.All)
             {
-                KeyValuePair<DateTime, DateTime> dateTime = Utils.GetDateTime(period,status);
+                KeyValuePair<DateTime, DateTime> dateTime = Utils.GetDateTime(period, status);
 
 
                 return _db.MatchesPlayers
@@ -134,6 +134,8 @@ namespace tournaments_api.Services
                     .Include(m => m.Sport)
                     .Include(m => m.FirstPlayer)
                     .Include(m => m.SecondPlayer)
+                    .OrderBy(match => match.StartDate)
+                    .OrderBy(match => match.EndDate)
                     .ToList();
             }
             else
@@ -144,20 +146,24 @@ namespace tournaments_api.Services
                     .Include(m => m.Sport)
                     .Include(m => m.FirstPlayer)
                     .Include(m => m.SecondPlayer)
+                    .OrderBy(match => match.StartDate)
+                    .OrderBy(match => match.EndDate)
                     .ToList();
             }
         }
 
-        public List<TournamentPlayers> GetTournaments(string id,Status status, Period period)
+        public List<TournamentPlayers> GetTournaments(string id, Status status, Period period)
         {
             if (period != Period.All)
             {
-                KeyValuePair<DateTime, DateTime> dateTime = Utils.GetDateTime(period,status) ;
+                KeyValuePair<DateTime, DateTime> dateTime = Utils.GetDateTime(period, status);
 
                 return _db.TournamentPlayers
                 .Include(tournament => tournament.Matches)
                 .Include("Matches.Sport")
-                .Where(tournament => tournament.Matches.Any(match => match.FirstPlayer.Id == id || match.SecondPlayer.Id == id) && tournament.Status==status && dateTime.Key <= tournament.EndDate && tournament.EndDate <= dateTime.Value)
+                .Where(tournament => tournament.Matches.Any(match => match.FirstPlayer.Id == id || match.SecondPlayer.Id == id) && tournament.Status == status && dateTime.Key <= tournament.EndDate && tournament.EndDate <= dateTime.Value)
+                .OrderBy(tournament => tournament.StartDate)
+                .OrderBy(tournament => tournament.EndDate)
                 .ToList();
             }
             else
@@ -166,10 +172,12 @@ namespace tournaments_api.Services
                 .Include(tournament => tournament.Matches)
                 .Include("Matches.Sport")
                 .Where(tournament => tournament.Matches.Any(match => match.FirstPlayer.Id == id || match.SecondPlayer.Id == id) && tournament.Status == status)
+                .OrderBy(tournament => tournament.StartDate)
+                .OrderBy(tournament => tournament.EndDate)
                 .ToList();
             }
         }
-        
+
         public int GetGym(string id)
         {
             Gym gym = _db.Gyms.FirstOrDefault(gym => gym.Owner.Id == id || gym.Members.Any(member => member.Id == id));

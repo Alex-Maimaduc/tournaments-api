@@ -77,7 +77,7 @@ namespace tournaments_api.Controllers
         [HttpGet("{id}/Tournaments/{status}/{period}")]
         public ActionResult<List<TournamentPlayers>> GetTournamentsPlayers(int id, Status status, Period period)
         {
-            return _sport.GetTournaments(id, Status.NotStarted, period);
+            return _sport.GetTournaments(id, status, period);
         }
     }
 }

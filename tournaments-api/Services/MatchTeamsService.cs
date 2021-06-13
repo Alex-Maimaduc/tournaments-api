@@ -26,6 +26,8 @@ namespace tournaments_api.Services
             .Include(match => match.SecondTeam)
             .Include(match => match.Sport)
             .Include(match => match.Gym)
+            .Include("Gym.Owner")
+            .Include("Gym.Members")
             .FirstOrDefault(match=>match.Id==id);
 
         public MatchTeams Create(MatchTeams match)
@@ -47,6 +49,17 @@ namespace tournaments_api.Services
             {
                 return false;
             }
+
+            match.Sport = _db.Sports.Find(match.Sport.Id);
+            match.Gym = _db.Gyms.Find(match.Gym.Id);
+            match.FirstTeam = _db.Teams.Find(match.FirstTeam.Id);
+            match.SecondTeam = _db.Teams.Find(match.SecondTeam.Id);
+
+            if (match.Tournament != null)
+            {
+                match.Tournament = _db.TournamentTeams.Find(match.Tournament.Id);
+            }
+
             _db.MatchTeams.Update(match);
             _db.SaveChanges();
 

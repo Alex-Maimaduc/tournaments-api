@@ -120,6 +120,8 @@ namespace tournaments_api.Services
                  .Include(m => m.FirstTeam)
                  .Include(m => m.SecondTeam)
                  .Include(match => match.Gym)
+                 .OrderBy(match=>match.StartDate)
+                 .OrderBy(match=>match.EndDate)
                  .ToList();
             }
             else
@@ -130,6 +132,8 @@ namespace tournaments_api.Services
                  .Include(m => m.FirstTeam)
                  .Include(m => m.SecondTeam)
                  .Include(match => match.Gym)
+                 .OrderBy(match => match.StartDate)
+                 .OrderBy(match => match.EndDate)
                  .ToList();
             }
         }
@@ -143,7 +147,9 @@ namespace tournaments_api.Services
                 return _db.TournamentTeams
                     .Include(tornament => tornament.Matches)
                     .Include("Matches.Sport")
-                    .Where(tournament => tournament.Matches.Any(match => match.FirstTeam.Id == id || match.SecondTeam.Id == id) && tournament.Status == status && dateTime.Key <= tournament.EndDate && tournament.EndDate <= dateTime.Value)
+                    .Where(tournament => tournament.Matches.Any(match => match.FirstTeam.Id == id || match.SecondTeam.Id == id) && tournament.Status == status && dateTime.Key <= tournament.StartDate && tournament.StartDate <= dateTime.Value)
+                    .OrderBy(tournament => tournament.StartDate)
+                    .OrderBy(tournament => tournament.EndDate)
                     .ToList();
             }
             else
@@ -152,6 +158,8 @@ namespace tournaments_api.Services
                    .Include(tornament => tornament.Matches)
                    .Include("Matches.Sport")
                    .Where(tournament => tournament.Matches.Any(match => match.FirstTeam.Id == id || match.SecondTeam.Id == id) && tournament.Status == status)
+                   .OrderBy(tournament => tournament.StartDate)
+                   .OrderBy(tournament => tournament.EndDate)
                    .ToList();
             }
         }

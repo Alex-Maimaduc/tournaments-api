@@ -65,6 +65,8 @@ namespace tournaments_api.Services
                     .Include(m => m.Sport)
                     .Include(m => m.FirstPlayer)
                     .Include(m => m.SecondPlayer)
+                    .OrderBy(match => match.StartDate)
+                    .OrderBy(match => match.EndDate)
                     .ToList();
             }
             else
@@ -75,6 +77,8 @@ namespace tournaments_api.Services
                     .Include(m => m.Sport)
                     .Include(m => m.FirstPlayer)
                     .Include(m => m.SecondPlayer)
+                    .OrderBy(match => match.StartDate)
+                    .OrderBy(match => match.EndDate)
                     .ToList();
             }
 
@@ -89,7 +93,9 @@ namespace tournaments_api.Services
                 return _db.TournamentPlayers
                 .Include(tournament => tournament.Matches)
                 .Include("Matches.Sport")
-                .Where(tournament => tournament.Matches.Any(match => match.Sport.Id == id) && tournament.Status == status && dateTime.Key <= tournament.EndDate && tournament.EndDate <= dateTime.Value)
+                .Where(tournament => tournament.Matches.Any(match => match.Sport.Id == id) && tournament.Status == status && dateTime.Key <= tournament.StartDate && tournament.StartDate <= dateTime.Value)
+                .OrderBy(tournament => tournament.StartDate)
+                .OrderBy(tournament => tournament.EndDate)
                 .ToList();
             }
             else
@@ -98,6 +104,8 @@ namespace tournaments_api.Services
                 .Include(tournament => tournament.Matches)
                 .Include("Matches.Sport")
                 .Where(tournament => tournament.Matches.Any(match => match.Sport.Id == id ) && tournament.Status == status)
+                .OrderBy(tournament => tournament.StartDate)
+                .OrderBy(tournament => tournament.EndDate)
                 .ToList();
             }
         }

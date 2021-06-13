@@ -101,6 +101,8 @@ namespace tournaments_api.Services
                     .Include(match => match.Sport)
                     .Include(match => match.Gym)
                     .Where(match => match.Gym.Id == id && match.Status == status && dateTime.Key <= match.StartDate && match.StartDate <= dateTime.Value)
+                    .OrderBy(match => match.StartDate)
+                    .OrderBy(match => match.EndDate)
                     .ToList();
 
             }
@@ -112,6 +114,8 @@ namespace tournaments_api.Services
                     .Include(match => match.Sport)
                     .Include(match => match.Gym)
                     .Where(match => match.Gym.Id == id && match.Status == status)
+                    .OrderBy(match => match.StartDate)
+                    .OrderBy(match => match.EndDate)
                     .ToList();
             }
         }
@@ -125,7 +129,9 @@ namespace tournaments_api.Services
                 return _db.TournamentPlayers
                     .Include(tournament => tournament.Matches)
                     .Include("Matches.Sport")
-                    .Where(tournament => tournament.Matches.Any(match => match.Gym.Id == id) && tournament.Status == status && dateTime.Key <= tournament.EndDate && tournament.EndDate <= dateTime.Value)
+                    .Where(tournament => tournament.Matches.Any(match => match.Gym.Id == id) && tournament.Status == status && dateTime.Key <= tournament.StartDate && tournament.StartDate <= dateTime.Value)
+                    .OrderBy(tournament => tournament.StartDate)
+                    .OrderBy(tournament => tournament.EndDate)
                     .ToList();
             }
             else
@@ -134,6 +140,8 @@ namespace tournaments_api.Services
                     .Include(tournament => tournament.Matches)
                     .Include("Matches.Sport")
                     .Where(tournament => tournament.Matches.Any(match => match.Gym.Id == id) && tournament.Status == status)
+                    .OrderBy(tournament => tournament.StartDate)
+                    .OrderBy(tournament => tournament.EndDate)
                     .ToList();
 
                 return tournaments;

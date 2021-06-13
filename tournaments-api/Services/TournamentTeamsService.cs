@@ -36,7 +36,7 @@ namespace tournaments_api.Services
                 match.FirstTeam = _db.Teams.Find(match.FirstTeam.Id);
                 match.SecondTeam = _db.Teams.Find(match.SecondTeam.Id);
                 match.Sport = _db.Sports.Find(match.Sport.Id);
-                match.Gym = _db.Gyms.Find(match.Gym.Id);
+                match.Gym = _db.Gyms.Include(gym=>gym.Owner).FirstOrDefault(g=>g.Id==match.Gym.Id);
                 matches.Add(match);
             });
 
@@ -54,6 +54,19 @@ namespace tournaments_api.Services
             {
                 return false;
             }
+
+            List<MatchTeams> matches = new List<MatchTeams>();
+
+            tournament.Matches.ForEach(match =>
+            {
+                match.FirstTeam = _db.Teams.Find(match.FirstTeam.Id);
+                match.SecondTeam = _db.Teams.Find(match.SecondTeam.Id);
+                match.Sport = _db.Sports.Find(match.Sport.Id);
+                match.Gym = _db.Gyms.Find(match.Gym.Id);
+                matches.Add(match);
+            });
+
+            tournament.Matches = matches;
 
             _db.TournamentTeams.Update(tournament);
             _db.SaveChanges();
