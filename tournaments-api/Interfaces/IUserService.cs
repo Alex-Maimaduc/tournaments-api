@@ -34,8 +34,12 @@ namespace tournaments_api.Interfaces
 
         List<MatchPlayers> GetMatchesHistory(string id, int sportId, DateTime startDate, DateTime endDate);
 
-        Stats GetStats(string id, int sportId, DateTime startDate, DateTime endDate);
+        Stats GetStats(string id, int sportId, Period period);
 
-        List<User> GetUsersForMatch(DateTime startDate, DateTime endDate);
+        List<User> GetUsersForMatch(int sportId,DateTime startDate, DateTime endDate);
+
+        List<User> GetUsersForTeam();
+
+        List<User> GetUsersForGym();
     }
 }

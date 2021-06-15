@@ -4,6 +4,7 @@ using tournaments_api.Interfaces;
 using tournaments_api.DBModels;
 using System;
 using tournaments_api.Enums;
+using tournaments_api.Models;
 
 namespace tournaments_api.Controllers
 {
@@ -148,10 +149,28 @@ namespace tournaments_api.Controllers
             return _user.GetMatchesHistory(id,sportId,startDate,endDate);
         }
 
-        [HttpGet("GetUsersForMatch/{startDate}/{endDate}")]
-        public ActionResult<List<User>> GetUsersForMatch(DateTime startDate,DateTime endDate)
+        [HttpGet("GetUsersForMatch/{sportId}/{startDate}/{endDate}")]
+        public ActionResult<List<User>> GetUsersForMatch(int sportId,DateTime startDate,DateTime endDate)
         {
-            return _user.GetUsersForMatch(startDate, endDate);
+            return _user.GetUsersForMatch(sportId,startDate, endDate);
+        }
+
+        [HttpGet("{id}/GetStats/{sportId}/{period}")]
+        public ActionResult<Stats> GetStatus(string id, int sportId, Period period)
+        {
+            return _user.GetStats(id, sportId, period);
+        }
+
+        [HttpGet("GetUsersForTeam")]
+        public ActionResult<List<User>> GetUsersForTeam()
+        {
+            return _user.GetUsersForTeam();
+        }
+
+        [HttpGet("GetUsersForGym")]
+        public ActionResult<List<User>> GetUsersForGym()
+        {
+            return _user.GetUsersForGym();
         }
     }
 }
