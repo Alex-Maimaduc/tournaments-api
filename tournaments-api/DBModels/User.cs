@@ -25,6 +25,8 @@ namespace tournaments_api.DBModels
 
         public string ImagePath { get; set; }
 
+        public bool IsDeleted { get; set; }
+
         public List<Sport> FavoriteSports { get; set; }
 
         [InverseProperty("Members")]

@@ -74,10 +74,22 @@ namespace tournaments_api.Controllers
             return _sport.GetMatches(id, status, period);
         }
 
+        [HttpGet("{id}/MatchesTeams/{status}/{period}")]
+        public ActionResult<List<MatchTeams>> GetMatchesTeams(int id, Status status, Period period)
+        {
+            return _sport.GetMatchesTeams(id, status, period);
+        }
+
         [HttpGet("{id}/Tournaments/{status}/{period}")]
-        public ActionResult<List<TournamentPlayers>> GetTournamentsPlayers(int id, Status status, Period period)
+        public ActionResult<List<TournamentPlayers>> GetTournaments(int id, Status status, Period period)
         {
             return _sport.GetTournaments(id, status, period);
+        }
+
+        [HttpGet("{id}/TournamentsTeams/{status}/{period}")]
+        public ActionResult<List<TournamentTeams>> GetTournamentsTeams(int id, Status status, Period period)
+        {
+            return _sport.GetTournamentsTeams(id, status, period);
         }
     }
 }

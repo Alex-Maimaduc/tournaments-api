@@ -143,10 +143,16 @@ namespace tournaments_api.Controllers
             return gymId;
         }
 
-        [HttpGet("{id}/MatchesHistory/{sportId}/{startDate}/{endDate}")]
-        public ActionResult<List<MatchPlayers>> GetMatchesHistory(string id,int sportId, DateTime startDate, DateTime endDate)
+        [HttpGet("{id}/MatchesHistory/{sportId}/{period}")]
+        public ActionResult<List<MatchPlayers>> GetMatchesHistory(string id,int sportId, Period period)
         {
-            return _user.GetMatchesHistory(id,sportId,startDate,endDate);
+            return _user.GetMatchesHistory(id,sportId,period);
+        }
+
+        [HttpGet("{id}/TournamentsHistory/{sportId}/{period}")]
+        public ActionResult<List<TournamentPlayers>> GetTournnamentsHistory(string id, int sportId, Period period)
+        {
+            return _user.GetTournamentsHistory(id, sportId, period);
         }
 
         [HttpGet("GetUsersForMatch/{sportId}/{startDate}/{endDate}")]
@@ -171,6 +177,22 @@ namespace tournaments_api.Controllers
         public ActionResult<List<User>> GetUsersForGym()
         {
             return _user.GetUsersForGym();
+        }
+
+        [HttpDelete("{id}/LeaveGym")]
+        public IActionResult LeaveGym(string id)
+        {
+            _user.LeaveGym(id);
+
+            return Ok();
+        }
+
+        [HttpDelete("{id}/LeaveTeam")]
+        public IActionResult LeaveTeam(string id)
+        {
+            _user.LeaveTeam(id);
+
+            return Ok();
         }
     }
 }

@@ -54,30 +54,32 @@ namespace tournaments_api.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public ActionResult<bool> Delete(int id)
         {
-            Gym gym = _gyms.Get(id);
-
-            if (gym == null)
+            if (!_gyms.Delete(id))
             {
-                return NotFound();
+                return false;
             }
 
-            _gyms.Delete(id);
-
-            return Ok();
+            return true;
         }
 
-        [HttpGet("{id}/Matches/{status}/{period}")]
-        public ActionResult<List<MatchPlayers>> GetMatches(int id, Status status, Period period)
+        [HttpGet("{id}/Matches/{status}/{period}/{sportId}")]
+        public ActionResult<List<MatchPlayers>> GetMatches(int id, Status status, Period period, int sportId)
         {
-            return _gyms.GetMatches(id, status, period);
+            return _gyms.GetMatches(id, status, period, sportId);
         }
+        [HttpGet("{id}/MatchesTeams/{status}/{period}/{sportId}")]
+        public ActionResult<List<MatchTeams>> GetMatchesTeams(int id, Status status, Period period, int sportId) =>
+            _gyms.GetMatchesTeams(id, status, period, sportId);
 
-        [HttpGet("{id}/Tournaments/{status}/{period}")]
-        public ActionResult<List<TournamentPlayers>> GetTournaments(int id, Status status, Period period)
-        {
-            return _gyms.GetTournaments(id,status,period);
-        }
+        [HttpGet("{id}/Tournaments/{status}/{period}/{sportId}")]
+        public ActionResult<List<TournamentPlayers>> GetTournaments(int id, Status status, Period period, int sportId) =>
+             _gyms.GetTournaments(id, status, period, sportId);
+
+        [HttpGet("{id}/TournamentsTeams/{status}/{period}/{sportId}")]
+        public ActionResult<List<TournamentTeams>> GetTournamentsTeams(int id, Status status, Period period, int sportId) =>
+             _gyms.GetTournamentsTeams(id, status, period, sportId);
+
     }
 }
