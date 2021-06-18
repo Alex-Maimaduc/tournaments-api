@@ -412,7 +412,7 @@ namespace tournaments_api.Services
             List<User> users = _db.Users.Include(user => user.FavoriteSports).ToList();
 
             users.RemoveAll(user => _db.MatchesPlayers.Any(match => (match.FirstPlayer.Id == user.Id || match.SecondPlayer.Id == user.Id) &&
-                 ((match.StartDate <= startDate && startDate <= match.EndDate) || (match.StartDate <= endDate && endDate <= match.EndDate))) ||
+                 ((match.StartDate <= startDate && startDate <= match.EndDate) || (match.StartDate <= endDate && endDate <= match.EndDate) || (startDate <= match.StartDate && match.StartDate<=endDate)))|| 
                  !user.FavoriteSports.Any(sport => sport.Id == sportId));
 
             return users;
