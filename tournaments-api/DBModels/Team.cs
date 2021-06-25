@@ -12,19 +12,20 @@ namespace tournaments_api.DBModels
         [Required]
         public int Id { get; set; }
 
+        [MaxLength(200)]
         public string Description { get; set; }
 
         [Required]
         public string Name { get; set; }
-
-        [Required]
-        public Sport Sport { get; set; }
 
         public DateTime CreationDate { get; set; }
 
         public string ImagePath { get; set; }
 
         public bool IsDeleted { get; set; }
+
+        [Required]
+        public Sport Sport { get; set; }
 
         public User Owner { get; set; }
 
