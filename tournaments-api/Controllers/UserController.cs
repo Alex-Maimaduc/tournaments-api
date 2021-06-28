@@ -162,7 +162,7 @@ namespace tournaments_api.Controllers
         }
 
         [HttpGet("{id}/GetStats/{sportId}/{period}")]
-        public ActionResult<Stats> GetStatus(string id, int sportId, Period period)
+        public ActionResult<Stats> GetStats(string id, int sportId, Period period)
         {
             return _user.GetStats(id, sportId, period);
         }

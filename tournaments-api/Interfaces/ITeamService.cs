@@ -16,5 +16,6 @@ namespace tournaments_api.Interfaces
         List<MatchTeams> GetMatches(int id, Status status, Period period);
         List<TournamentTeams> GetTournaments(int id, Status status, Period period);
         List<Team> GetTeamsForMatch(int sportId, DateTime startDate, DateTime endDate);
+        Stats GetStats(int id, Period period);
     }
 }

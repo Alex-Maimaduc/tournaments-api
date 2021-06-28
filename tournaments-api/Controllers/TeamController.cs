@@ -79,9 +79,15 @@ namespace tournaments_api.Controllers
         }
 
         [HttpGet("GetTeamsForMatch/{sportId}/{startDate}/{endDate}")]
-        public ActionResult<List<Team>> GetTeamsForMatch(int sportId,DateTime startDate,DateTime endDate)
+        public ActionResult<List<Team>> GetTeamsForMatch(int sportId, DateTime startDate, DateTime endDate)
         {
             return _team.GetTeamsForMatch(sportId, startDate, endDate);
+        }
+
+        [HttpGet("{id}/GetStats/{period}")]
+        public ActionResult<Stats> GetStats(int id, Period period)
+        {
+            return _team.GetStats(id, period);
         }
     }
 }

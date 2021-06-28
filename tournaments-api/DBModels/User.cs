@@ -34,7 +34,7 @@ namespace tournaments_api.DBModels
 
         [InverseProperty("Players")]
         public Team Team { get; set; }
-
+        
         public User()
         {
             FavoriteSports = new List<Sport>();

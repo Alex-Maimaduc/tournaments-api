@@ -44,6 +44,10 @@ namespace tournaments_api.Services
 
             tournament.Matches = matches;
 
+            tournament.Gym = _db.Gyms.Find(tournament.Gym.Id);
+
+            tournament.Sport = _db.Sports.Find(tournament.Sport.Id);
+
             _db.TournamentTeams.Add(tournament);
             _db.SaveChanges();
 
@@ -69,6 +73,10 @@ namespace tournaments_api.Services
             });
 
             tournament.Matches = matches;
+
+            tournament.Gym = _db.Gyms.Find(tournament.Gym.Id);
+
+            tournament.Sport = _db.Sports.Find(tournament.Sport.Id);
 
             _db.TournamentTeams.Update(tournament);
             _db.SaveChanges();

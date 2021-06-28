@@ -14,6 +14,7 @@ namespace tournaments_api.DBModels
 
         public string Name { get; set; }
 
+        [MaxLength(95)]
         public string Description { get; set; }
 
         public DateTime StartDate { get; set; }
@@ -24,6 +25,10 @@ namespace tournaments_api.DBModels
 
         [Column(TypeName = "nvarchar(10)")]
         public Status Status { get; set; }
+
+        public Gym Gym { get; set; }
+
+        public Sport Sport { get; set; }
 
         public Tournament()
         {
