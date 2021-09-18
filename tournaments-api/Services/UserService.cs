@@ -240,7 +240,7 @@ namespace tournaments_api.Services
             }
 
             List<MatchPlayers> matches = _db.MatchesPlayers
-                      .Include(match=>match.FirstPlayer)
+                      .Include(match => match.FirstPlayer)
                       .Where(match => (match.FirstPlayer.Id == id || match.SecondPlayer.Id == id) &&
                         match.Status == Status.Finished &&
                         (period == Period.All || (dateTime.Key <= match.StartDate && match.StartDate <= dateTime.Value)) &&
@@ -279,11 +279,13 @@ namespace tournaments_api.Services
 
         public List<User> GetUsersForMatch(int sportId, DateTime startDate, DateTime endDate)
         {
-            List<User> users = _db.Users.Include(user => user.FavoriteSports).ToList();
+            List<User> users = _db.Users.Where(user => user.FavoriteSports.Any(sport => sport.Id == sportId)).ToList();
 
             users.RemoveAll(user => _db.MatchesPlayers.Any(match => (match.FirstPlayer.Id == user.Id || match.SecondPlayer.Id == user.Id) &&
-                 ((match.StartDate <= startDate && startDate <= match.EndDate) || (match.StartDate <= endDate && endDate <= match.EndDate) || (startDate <= match.StartDate && match.StartDate <= endDate))) ||
-                 !user.FavoriteSports.Any(sport => sport.Id == sportId));
+                 ((match.StartDate <= startDate && startDate <= match.EndDate) ||
+                    (match.StartDate <= endDate && endDate <= match.EndDate) ||
+                    (startDate <= match.StartDate && match.StartDate <= endDate)))
+                 );
 
             return users;
         }
